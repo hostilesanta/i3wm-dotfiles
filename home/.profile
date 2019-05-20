@@ -12,8 +12,6 @@
 #
 # Reload for curent bash 'source ~/.profile'
 
-export PATH=${PATH}:${MAVEN_HOME}/bin:${BIN}
-
 # default apps
 export BROWSER="chromium"
 export EDITOR="vim"
@@ -35,6 +33,8 @@ export MAVEN_HOME="${DEV}/tools/apache-maven"
 export _JAVA_OPTIONS="-Dswing.aatext=true -Dawt.useSystemAAFontSettings=on"
 # Enable qt-gtk themes uniformization
 export QT_QPA_PLATFORMTHEME="qt5ct"
+
+export PATH=${PATH}:${MAVEN_HOME}/bin:${BIN}
 
 # if running bash
 if [ -n "${BASH_VERSION}" ]; then

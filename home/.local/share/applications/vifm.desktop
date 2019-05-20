@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=vifm file manager
+Exec=/usr/local/bin/st -e vifm
+

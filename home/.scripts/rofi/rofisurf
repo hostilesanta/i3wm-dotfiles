@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Dependency: PACMAN: surf
+
+link="$(rofi -lines 0 -dmenu -i -p 'Enter url')"
+
+if [ ! -z "${link}" ]; then
+   surf "${link}"  
+fi

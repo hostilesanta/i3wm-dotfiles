@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# Dependency: AUR: rofi-calc
+
+rofi -show calc \
+     -modi calc \
+     -no-show-match \
+     -no-sort 

@@ -1,0 +1,12 @@
+#!/usr/bin/sh
+
+urgent_val=100
+pck_count=$(checkupdates | wc -l)
+
+if [ "${pck_count}" -gt 0 ]; then
+   echo "${pck_count}"
+   if [ "${pck_count}" -gt "${urgent_val}" ]; then
+      notify-send --urgency=critical "Time to update the system !" "There are ${pck_count} packages ready for update."
+      exit 0
+   fi
+fi

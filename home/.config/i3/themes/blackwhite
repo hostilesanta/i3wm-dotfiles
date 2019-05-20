@@ -1,0 +1,26 @@
+# blackwhite theme for i3wm by teddy
+# $i3-theme-window
+
+# <clientclass>         <border> <bg> <text> <indicator>
+client.focused          #dbd2d2 #dbd2d2 #222222 #222222
+client.focused_inactive #444444 #444444 #dbd2d2 #444444
+client.unfocused        #444444 #444444 #dbd2d2 #444444
+client.urgent           #ba0000 #ba0000 #dbd2d2 #700000
+
+# $i3-background
+exec_always --no-startup-id xsetroot -solid '#005577'
+
+# $i3-theme-bar
+colors {
+   # <bar>
+   background #222222
+   separator  #dbd2d2
+   statusline #dbd2d2
+
+   # <workclass>      <border> <bg> <text>
+   focused_workspace  #dbd2d2 #222222 #dbd2d2
+   active_workspace   #4f4e4e #222222 #dbd2d2
+   inactive_workspace #4f4e4e #222222 #dbd2d2
+   urgent_workspace   #ba0000 #ba0000 #dbd2d2
+}
+

@@ -1,0 +1,5 @@
+--ignore-errors
+# --no-playlist
+
+# Save in ~/Videos
+-o ${HOME}/Videos/%(title)s.%(ext)s

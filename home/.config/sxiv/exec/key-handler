@@ -1,0 +1,26 @@
+#!/bin/sh
+
+while read file
+do
+        case "$1" in
+        "d")
+                mv "$file" $HOME/.local/share/Trash/files ;;
+        "D")
+                rm "$file" ;; 
+        "W")
+                cp "$file" $HOME/.config/i3/wallpaper/hdmi.png && 
+                feh --bg-scale "$HOME/.config/i3/wallpaper/hdmi.png" 
+                notify-send -i "$HOME/.config/i3/wallpaper/hdmi.png" "HDMI wallpaper changed !" ;;
+        "w")
+                cp "$file" $HOME/.config/i3/wallpaper/eDP.png && 
+                feh --bg-scale "$HOME/.config/i3/wallpaper/eDP.png" 
+                notify-send -i "$HOME/.config/i3/wallpaper/eDP.png" "eDP wallpaper changed !" ;;
+        "r")
+                convert -rotate 90 "$file" "$file" ;;
+        "R")
+                convert -rotate -90 "$file" "$file" ;;
+        "y")
+                echo -n "$file" | xclip -selection clipboard &&
+                notify-send "$file copied to clipboard ";;
+        esac    
+done  

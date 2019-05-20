@@ -1,0 +1,2 @@
+#!/bin/sh
+feh --bg-fill '/home/teddy/.config/i3/wallpaper/hdmi.png' 

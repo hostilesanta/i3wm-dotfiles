@@ -1,0 +1,253 @@
+#--------------------------------------------------------------------------
+# I3 CONFIGURATION FILE
+#--------------------------------------------------------------------------
+
+# Set font
+font pango:Font Awesome, Icons 10
+# No mouse focus
+focus_follows_mouse no
+# Set mod key
+set $mod            Mod4
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier   $mod
+
+#--------------------------------------------------------------------------
+# VARIABLES
+#--------------------------------------------------------------------------
+
+set $i3Blocks              ~/.config/i3blocks/i3blocks.conf
+
+#--------------------------------------------------------------------------
+# WINDOW SETTING
+#--------------------------------------------------------------------------
+
+# Border settings
+#default_border normal|none|pixel
+#default_border normal|pixel <px>
+#default_floating_border normal|none|pixel
+#default_floating_border normal|pixel <px>
+
+default_border                  pixel 2
+default_floating_border         pixel 2
+
+# Floating window size
+#floating_minimum_size           1200 x 600
+floating_maximum_size           1200 x 600
+
+# Gaps (i3-gaps from AUR)
+gaps inner                      4
+gaps outer                      7
+#smart_gaps                      on
+#smart_borders                   on
+
+# Delaying urgency hint reset on workspace change
+force_display_urgency_hint 	  2000 ms
+
+# Popups durring full screen mode
+# Ex: popup_during_fullscreen smart|ignore|leave_fullscreen
+popup_during_fullscreen 	     smart
+
+#--------------------------------------------------------------------------
+# FLOATING CRITERIA
+#--------------------------------------------------------------------------
+
+for_window [window_role="pop-up"]           floating enable
+for_window [window_role="dialog"]           floating enable
+for_window [window_role="splash"]           floating enable
+
+for_window [class="skypeforlinux"]          floating enable move position center
+for_window [class="Skype"]                  floating enable move position center
+for_window [class="Pavucontrol"]            floating enable
+for_window [class="Nitrogen"]               floating enable
+for_window [title="Network Connections"]    floating enable
+for_window [class="Eclipse"]                floating enable move position center
+
+#--------------------------------------------------------------------------
+# WORKSPACE
+#--------------------------------------------------------------------------
+
+# Put mouse in the center of the focused window on output
+# mouse_warping output|none
+mouse_warping 						                     output
+
+# Automatic back and forth switching to the current workspace( just press again $mod+number to go back )
+workspace_auto_back_and_forth 				         yes
+
+
+# Automatically put workspaces on displays
+#workspace 1                                       output primary
+#workspace 2                                       output eDP1
+
+set $W_MAIN                 				            "1"
+set $W_WEB                  				            "3"
+set $W_CODE                 				            "4"
+set $W_FM                   				            "7"
+set $W_MEDIA                				            "8"
+set $W_IM                   				            "9"
+set $W_AUX                  				            "10"
+
+# Apps workspace assignments
+assign [class="^vlc$"]              			      $W_MEDIA
+assign [class="^smplayer$"]         			      $W_MEDIA
+assign [title="^Popcorn Time$"]     			      $W_MEDIA
+assign [title="^Skype"]             			      $W_IM
+assign [class="^Skype"]             			      $W_IM
+assign [class="^Qbittorrent$"]      			      $W_Aux
+assign [title="^GNU Image Manipulation Program$"] 	$W_Aux
+
+#--------------------------------------------------------------------------
+# I3 BAR MENU
+#--------------------------------------------------------------------------
+
+# Start polybar
+#exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+bar {
+   # tray_padding           3px
+   tray_output             primary
+   separator_symbol        "|"
+   position                top
+   status_command          i3blocks -c $i3Blocks
+   binding_mode_indicator  yes
+   mode                    dock
+   workspace_buttons       yes
+   # $i3-theme-bar
+}
+
+# Toggle i3 bar, hide/show
+bindsym $mod+Shift+m bar mode toggle
+
+#--------------------------------------------------------------------------
+# SHORTCUTS
+#--------------------------------------------------------------------------
+
+## WINDOW
+# Kill focused window
+bindsym $mod+Shift+q                kill
+
+bindsym $mod+plus                   scratchpad show
+bindsym $mod+Shift+plus             move scratchpad
+
+# Enter fullscreen mode for the focused container
+bindsym $mod+f                      fullscreen toggle
+# Floating toggle if window is floating
+bindsym $mod+Shift+f                floating toggle move position center
+
+# Change focus between tiling / floating windows
+bindsym $mod+space                  focus mode_toggle
+
+# Change/Move focus
+bindsym $mod+h                      focus left
+bindsym $mod+Shift+h                move left
+bindsym $mod+j                      focus down
+bindsym $mod+Shift+j                move down
+bindsym $mod+k                      focus up
+bindsym $mod+Shift+k                move up
+bindsym $mod+l                      focus right
+bindsym $mod+Shift+l                move right
+bindsym $mod+Tab                    focus right
+
+bindsym $mod+Left                   focus left
+bindsym $mod+Shift+Left             move left
+Bindsym $mod+Down                   focus down
+bindsym $mod+Shift+Down             move down
+bindsym $mod+Up                     focus up
+bindsym $mod+Shift+Up               move up
+bindsym $mod+Right                  focus right
+bindsym $mod+Shift+Right            move right
+
+# Split in horizontal/vertical orientation
+bindsym $mod+t                      split toggle
+# Change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s                      layout stacking
+bindsym $mod+w                      layout tabbed
+bindsym $mod+e                      layout toggle split
+
+# Focus the parent container
+bindsym $mod+a                      focus parent
+# Focus the child container
+bindsym $mod+Shift+a                focus child
+
+# Resize window (you can also use the mouse for that)
+bindsym $mod+r                      mode "resize"
+mode "resize" {
+  bindsym h                         resize shrink width 5 px or 5 ppt
+  bindsym j                         resize grow height 5 px or 5 ppt
+  bindsym k                         resize shrink height 5 px or 5 ppt
+  bindsym l                         resize grow width 5 px or 5 ppt
+  bindsym Left                      resize shrink width 5 px or 5 ppt
+  bindsym Down                      resize grow height 5 px or 5 ppt
+  bindsym Up                        resize shrink height 5 px or 5 ppt
+  bindsym Right                     resize grow width 5 px or 5 ppt
+
+  bindsym Return                    mode "default"
+  bindsym Escape                    mode "default"
+}
+
+## Move floating window top/bottom left/right
+bindsym $mod+F3                     floating toggle; sticky toggle; exec --no-startup-id bottomleft
+bindsym $mod+Shift+F3               floating toggle; sticky toggle; exec --no-startup-id bottomright
+bindsym $mod+F4                     floating toggle; sticky toggle; exec --no-startup-id topleft
+bindsym $mod+Shift+F4               floating toggle; sticky toggle; exec --no-startup-id topright
+
+## WORKSPACES
+# Switch/Move to workspace
+bindsym $mod+1 workspace    			1
+bindsym $mod+Shift+1                move container to workspace 1
+bindsym $mod+2 workspace    			2
+bindsym $mod+Shift+2                move container to workspace 2
+bindsym $mod+3 workspace    			3
+bindsym $mod+Shift+3                move container to workspace 3
+bindsym $mod+4 workspace    			4
+bindsym $mod+Shift+4                move container to workspace 4
+bindsym $mod+5 workspace    			5
+bindsym $mod+Shift+5                move container to workspace 5
+bindsym $mod+6 workspace    			6
+bindsym $mod+Shift+6                move container to workspace 6
+bindsym $mod+7 workspace    			7
+bindsym $mod+Shift+7                move container to workspace 7
+bindsym $mod+8 workspace    			$W_MEDIA
+bindsym $mod+Shift+8                move container to workspace $W_MEDIA
+bindsym $mod+9 workspace    			$W_IM
+bindsym $mod+Shift+9                move container to workspace $W_IM
+bindsym $mod+0 workspace    			$RW_AUX
+bindsym $mod+Shift+0                move container to workspace $W_AUX
+
+# Move the whole workspace to the next output (toggle between outputs)
+bindsym $mod+Shift+o                move workspace to output right
+# Move through workspaces
+bindsym $mod+Control+Left           workspace prev
+bindsym $mod+Control+Right          workspace next
+bindsym $mod+Control+h              workspace prev
+bindsym $mod+Control+l              workspace next
+
+# Rename workspace with i3-input using numbers and text
+bindsym $mod+i 						   exec i3-input -F 'rename workspace to "%s"' -P 'New name for this workspace: '
+
+# Jump to urgent window
+bindsym $mod+x [urgent=latest] 	   focus
+
+## CONFIG
+# Reload the configuration file
+bindsym $mod+Shift+w 		         reload
+# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r 		         restart
+
+#--------------------------------------------------------------------------
+# STARTUP APPS
+#--------------------------------------------------------------------------
+
+#exec --no-startup-id                xcompmgr
+# No blank screen when unused
+#exec --no-startup-id                xset -dpms
+#exec --no-startup-id                xset s off
+#exec --no-startup-id                nm-applet
+#exec --no-startup-id                greenclip daemon
+#exec --no-startup-id                numlockx on
+#exec --no-startup-id                ckb-next -b
+
+#--------------------------------------------------------------------------
+# WINDOW COLOR
+#--------------------------------------------------------------------------
+
+# $i3-theme-window

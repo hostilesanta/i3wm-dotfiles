@@ -1,0 +1,45 @@
+#!/bin/sh
+# Based on http://openweathermap.org/current
+# Check on http://openweathermap.org/find
+
+# Font Awesome(no emoji):      
+
+API_KEY="73bfabc743b0e57a3445c0bdd6199f19"
+CITY_ID="${BLOCK_INSTANCE}"
+
+ICON_SUNNY="☀️"
+ICON_CLOUDY="☁️"
+ICON_RAINY="🌧️"
+ICON_STORM="🌩️"
+ICON_SNOW="🌨️"
+ICON_FOG="🌫️"
+
+SYMBOL_CELSIUS="℃"
+
+WEATHER_URL="http://api.openweathermap.org/data/2.5/weather?id=${CITY_ID}&appid=${API_KEY}&units=metric"
+WEATHER_INFO=$(curl --silent ${WEATHER_URL})
+WEATHER_MAIN=$(echo ${WEATHER_INFO}|grep -o -e '\"main\":\"[a-Z]*\"'| awk -F ':' '{print $2}' | tr -d '"')
+WEATHER_TEMP=$(echo ${WEATHER_INFO}|grep -o -e '\"temp\":\-\?[0-9]*' | awk -F ':' '{print $2}' | tr -d '"')
+WEATHER_CITY=$(echo ${WEATHER_INFO}|grep -o -e '\"name\":\"[a-Z]*\"'| awk -F ':' '{print $2}' | tr -d '"')
+
+get_weather()
+{
+   echo "$(echo "$1" | grep "$2")"
+}
+
+if [ "$(get_weather "${WEATHER_MAIN}" "Snow")" ]; then
+   echo "${WEATHER_CITY} ${ICON_SNOW} ${WEATHER_TEMP}${SYMBOL_CELSIUS}"
+elif [ "$(get_weather "${WEATHER_MAIN}" "Rain")" ] || [ "$(get_weather "${WEATHER_MAIN}" "Drizzle")" ]; then
+   echo "${WEATHER_CITY} ${ICON_RAINY} ${WEATHER_TEMP}${SYMBOL_CELSIUS}"
+elif [ "$(get_weather "${WEATHER_MAIN}" "Cloud")" ]; then
+   echo "${WEATHER_CITY} ${ICON_CLOUDY} ${COLOR}${WEATHER_TEMP}${SYMBOL_CELSIUS}"
+elif [ "$(get_weather "${WEATHER_MAIN}" "Clear")" ]; then
+   echo "${WEATHER_CITY} ${ICON_SUNNY} ${WEATHER_TEMP}${SYMBOL_CELSIUS}"
+elif [ "$(get_weather "${WEATHER_MAIN}" "Fog")" ] || [ "$(get_weather "${WEATHER_MAIN}" "Mist")" ]; then
+   echo "${WEATHER_CITY} ${ICON_FOG} ${WEATHER_TEMP}${SYMBOL_CELSIUS}"
+elif [ $(get_weather "${WEATHER_MAIN}" "Storm") ] || [ $(get_weather "${WEATHER_MAIN}" "storm") ]; then
+   echo "${WEATHER_CITY} ${ICON_STORM} ${WEATHER_TEMP}${SYMBOL_CELSIUS}"
+else
+   echo "${WEATHER_CITY} ${WEATHER_MAIN} ${WEATHER_TEMP}${SYMBOL_CELSIUS}"
+fi
+

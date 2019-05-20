@@ -1,0 +1,66 @@
+https://www.archlinux.org/feeds/news               "linux"
+https://pentruprieteni.com/feed/                   "linux"
+
+https://www.technotification.com/feed              "tech"
+http://rss.slashdot.org/Slashdot/slashdotMain      "tech"
+http://feeds.feedburner.com/fossbytes              "tech"
+https://www.vice.com/en_us/rss/section/tech        "tech"
+https://opensource.com/feed                        "tech"
+https://www.oreilly.com/ideas/feed.atom            "tech"
+
+https://www.hackersonlineclub.com/feed/            "tech" "hack"
+https://latesthackingnews.com/feed/                "tech" "hack"
+https://feeds.feedburner.com/TheHackersNews        "tech" "hack"
+
+https://www.geek.com/feed/                         "geek"
+
+https://www.wired.com/feed/rss                     "science"
+https://feeds.newscientist.com/                    "science"
+
+https://eftimie.net/feed/                          "romania"
+https://www.timesnewroman.ro/?act=rss              "romania"
+
+# Youtube
+https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA     "~Luke Smith (YouTube)" "tech" "yt"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCVls1GmFKf6WlTraIb_IaJg     "~Distro Tube (YouTube)" "tech" "yt"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCZJiWlzzBjojABV4vOra7ng     "~CipFlix TV (YouTube)" "tech" "yt"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCH0BwIRPqHUElNMlka2jR7Q     "~CipTech TV (YouTube)" "tech" "yt"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCoryWpk4QVYKFCJul9KBdyw     "~Switch to Linux TV (YouTube)" "tech" "yt"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCJdmdUp5BrsWsYVQUylCMLg     "~Eric Dubois (YouTube)" "tech" "yt"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCXuqSBlHAE6Xw-yeJA0Tunw     "~Linus Tech Tips (YouTube)" "tech" "yt"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCqHktcPJV7C7T3e9Cg4T4iw     "~Treehouse (YouTube)" "tech" "yt"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCJbPGzawDH1njbqV-D5HqKw     "~Thenewboston (YouTube)" "tech" "yt"
+
+https://www.youtube.com/feeds/videos.xml?channel_id=UCK4p00drpt-AP2KxWs_H34Q     "~Doi Degeaba (YouTube)" "funny" "yt"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCJ0-OtVpF0wOKEqT2Z1HEtA     "~ElectroBOOM (YouTube)" "funny" "yt"
+
+https://www.youtube.com/feeds/videos.xml?channel_id=UCwUfX87V6RsbVVRrcrxmJAA     "~CreativeMonkeyz (YouTube)" "yt"
+https://www.youtube.com/feeds/videos.xml?channel_id=UC8CbFnDTYkiVweaz8y9wd_Q     "~Star Wars Theory (YouTube)" "yt"
+
+# Reddit
+https://www.reddit.com/r/archlinux.rss       "~Arch Linux (Reddit)" "reddit"
+https://www.reddit.com/r/linux.rss           "~Linux (Reddit)" "reddit"
+https://www.reddit.com/r/linuxquestions.rss  "~Linux Questions (Reddit)" "reddit"
+https://www.reddit.com/r/DistroTube.rss      "~Distro Tube (Reddit)" "reddit"
+https://www.reddit.com/r/lukesmith.rss       "~Luke Smith (Reddit)" "reddit"
+
+https://www.reddit.com/r/gadgets.rss         "~Gadgets (Reddit)" "reddit"
+https://www.reddit.com/r/hardware.rss        "~Hardware (Reddit)" "reddit"
+https://www.reddit.com/r/programming.rss     "~Programming (Reddit)" "reddit"
+https://www.reddit.com/r/raspberry_pi.rss    "~Raspberry PI (Reddit)" "reddit"
+https://www.reddit.com/r/technology.rss      "~Technology (Reddit)" "reddit"
+
+https://www.reddit.com/r/worldnews.rss       "~World News (Reddit)" "reddit"
+https://www.reddit.com/r/Romania.rss         "~Romania (Reddit)" "reddit"
+
+https://www.reddit.com/r/movies.rss          "~Movies (Reddit)" "reddit"
+https://www.reddit.com/r/gaming.rss          "~Gaming (Reddit)" "reddit"
+https://www.reddit.com/r/DIY.rss             "~DIY (Reddit)" "reddit"
+
+https://www.reddit.com/r/askscience.rss      "~Ask Science (Reddit)" "reddit"
+https://www.reddit.com/r/Documentaries.rss   "~Documentaries (Reddit)" "reddit"
+https://www.reddit.com/r/books.rss           "~Books (Reddit)" "reddit"
+https://www.reddit.com/r/space.rss           "~Space (Reddit)" "reddit"
+https://www.reddit.com/r/scifi.rss           "~SciFi (Reddit)" "reddit"
+http://rss.cnn.com/rss/cnn_topstories.rss
+http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml

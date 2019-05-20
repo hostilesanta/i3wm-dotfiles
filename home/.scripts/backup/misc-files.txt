@@ -1,0 +1,7 @@
+# Use /./ for relative paths. On destination the dir hierarchy will be created starting from /./
+home/teddy/./Development/projects/*.zip
+home/teddy/./Development/libraries/*.zip
+home/teddy/./Utilities/*.tar.gz
+home/teddy/Mount/hdd/common/./Documents
+home/teddy/Mount/hdd/common/./Pictures
+home/teddy/Mount/hdd/common/./Utilities

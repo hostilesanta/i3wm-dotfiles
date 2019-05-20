@@ -1,0 +1,87 @@
+!--------------------------------------------------------------------------------------------
+! To apply changes execute "xrdb -load ~/.Xresources"
+!--------------------------------------------------------------------------------------------
+
+! DPI settings
+Xft.dpi       : 100
+Xft.autohint  : 0
+Xft.lcdfilter : lcddefault
+Xft.hintstyle : hintfull
+Xft.hinting   : 1
+Xft.antialias : 1
+Xft.rgba      : rgb
+
+!--------------------------------------------------------------------------------------------
+! Install:
+!  PACMAN: urxvt-perls
+!  AUR: urxvt-resize-font-git
+!
+! urxvt terminal config
+!--------------------------------------------------------------------------------------------
+
+URxvt.perl-ext-common      : resize-font,keyboard-select
+URxvt.depth                : 32
+URxvt.background           : [90]#0d0f0f
+URxvt.scrollBar            : false
+URxvt.font                 : xft:Hack:pixelsize=12:antialias=true:autohint=true:hintstyle=full
+URxvt.internalBorder       : 5
+URxvt.foreground           : 15
+URxvt.letterSpace          : -1
+URxvt.cursorBlink          : true
+URxvt.cursorColor          : 15
+URxvt.mouseWheelScrollPage : true
+URxvt.keysym.C-Down        : resize-font:smaller
+URxvt.keysym.C-Up          : resize-font:bigger
+URxvt.keysym.M-C-slash     : perl:aAtt:word-complete
+URxvt.keysym.M-question    : perl:aAtt:fuzzy-complete
+URxvt.keysym.M-quotedbl    : perl:aAtt:undo
+URxvt.keysym.M-Escape      : perl:keyboard-select:activate
+
+!--------------------------------------------------------------------------------------------
+! Install:
+! AUR: st-luke-git
+!
+! st terminal config
+!--------------------------------------------------------------------------------------------
+
+st.font                    : HackNerdFont:pixelsize=12:antialias=true:autohint=true:fixed=true
+st.alpha                   : 200
+
+!--------------------------------------------------------------------------------------------
+! Themes 
+!--------------------------------------------------------------------------------------------
+
+! Gruvbox-dark modified
+! hard contrast         : *background : #1d2021
+*background             : #0d0f0f
+! soft contrast         : *background : #32302f
+*foreground             : #dbd2d2
+! Black + DarkGrey
+*color0                 : #0d0f0f
+*color8                 : #928374
+! DarkRed + Red
+*color1                 : #cc241d
+*color9                 : #fb4934
+! DarkGreen + Green
+*color2                 : #98971a
+*color10                : #b8bb26
+! DarkYellow + Yellow
+*color3                 : #d79921
+*color11                : #fabd2f
+! DarkBlue + Blue
+*color4                 : #458588
+*color12                : #83a598
+! DarkMagenta + Magenta
+*color5                 : #b16286
+*color13                : #d3869b
+! DarkCyan + Cyan
+*color6                 : #689d6a
+*color14                : #8ec07c
+! LightGrey + White
+#*color7                 : #a89984
+*color7                 : #dbd2d2
+*color15                : #dbd2d2
+
+
+
+

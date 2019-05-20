@@ -1,0 +1,35 @@
+#!/bin/sh
+
+main()
+{
+   case "$1" in
+      "--start")
+         t_start
+         ;;
+      "--stop")
+         t_stop
+         ;;
+      *)
+         exit 1
+         ;;
+   esac
+}
+
+t_start()
+{
+   proc_trans_da=$(pgrep -x transmission-da)
+
+   if [ ! ${proc_trans_da} ]; then
+      transmission-daemon
+      notify-send "Starting transmission daemon ..."
+   fi
+}
+
+t_stop()
+{
+   pkill transmission-da && notify-send "Stopping transmission daemon ..."
+}
+
+#-------------------------------------------------
+
+main "$@"

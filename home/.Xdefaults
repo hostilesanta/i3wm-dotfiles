@@ -1,0 +1,5 @@
+!URxvt.depth: 32
+!URxvt.background: [70]#000000
+!URxvt.scrollBar: false
+!URxvt.font: xft:Monospace:size=10
+!URxvt.foreground: #9dbed0

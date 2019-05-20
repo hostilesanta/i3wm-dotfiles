@@ -1,0 +1,60 @@
+# Basic keys
+super + Return
+		$TERMINAL
+super + b
+		$BROWSER
+
+# Rofi keys
+super + d
+		rofidrun
+super + shift + d
+		rofidisplay
+super + shift + Return
+		rofipower
+super + shift + Tab
+		rofiwindow
+super + shift + s
+		rofissh
+super + grave
+		roficlip
+super + m
+		rofimenu
+super + c
+		roficalc
+super + u
+		rofisurf
+
+# Function keys
+# HDMI/EDP
+super + {F1,shift+F1}
+		setdisplay {H,E}
+# HDMI + EDP-right/left
+super + {F2,shift+F2}
+		setdisplay {HER,HEL}
+# F3 - F4 defined in i3 config file
+# Mount/Umount devices
+super + {F9,shift+F9}
+		{rofimount,rofiumount}
+# Enable/disable transmission-daemon
+super + {F11,shift+F11}
+		transmission {--start,--stop}
+# Enable/disable nvidia composition pipeline (Disable screen tearing)
+super + {F12,shift+F12}
+		togglecompositor {On,Off}
+
+Print
+		screenshot -e
+shift + Print
+		screenshot -ue
+
+# Multimedia keys
+XF86AudioRaiseVolume
+		pulsemixer --change-volume +5
+XF86AudioLowerVolume
+		pulsemixer --change-volume -5
+XF86AudioMute
+		pulsemixer --toggle-mute
+XF86MonBrightnessUp
+		light -A 2
+XF86MonBrightnessDown
+		light -U 2

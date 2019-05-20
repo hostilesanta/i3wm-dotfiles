@@ -12,6 +12,8 @@
 #
 # Reload for curent bash 'source ~/.profile'
 
+export PATH=${PATH}:${MAVEN_HOME}/bin:${BIN}
+
 # default apps
 export BROWSER="chromium"
 export EDITOR="vim"
@@ -20,21 +22,19 @@ export FILE="ranger"
 export TERMINAL="st"
 
 export SCRIPTS="${HOME}/.scripts"
-export BIN="${HOME}/.local/bin"
 #export SCRIPTS_PATH="$(du $SCRIPTS | cut -f2 | tr '\n' ':' | sed 's/:*$//')"
+export BIN="${HOME}/.local/bin"
 export SUDO_ASKPASS="${SCRIPTS}/rofi/rofiaskpass"
 export BACKUP_DOTFILES="${HOME}/Utilities/linux/dotfiles"
 
-#export JAVA_HOME=/home/teddy/Development/Libraries/jdk/jdk1.8.0_121
-export MAVEN_HOME="/home/teddy/Development/tools/apache-maven"
+export DEV="${HOME}/Development"
+#export JAVA_HOME="${DEV}/Libraries/jdk/jdk1.8.0_121"
+export MAVEN_HOME="${DEV}/tools/apache-maven"
 
 # Improve java font rendering
 export _JAVA_OPTIONS="-Dswing.aatext=true -Dawt.useSystemAAFontSettings=on"
-
 # Enable qt-gtk themes uniformization
 export QT_QPA_PLATFORMTHEME="qt5ct"
-
-export PATH=${PATH}:${MAVEN_HOME}/bin:${BIN}
 
 # if running bash
 if [ -n "${BASH_VERSION}" ]; then

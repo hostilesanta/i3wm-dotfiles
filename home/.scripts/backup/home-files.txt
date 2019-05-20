@@ -1,7 +1,5 @@
 # Use /./ for relative paths. On destination the dir hierarchy will be created starting from /./
 /home/teddy/./.Xresources
-/home/teddy/./.Xdefaults
-/home/teddy/./.Xauthority
 /home/teddy/./.vimrc
 /home/teddy/./.profile
 /home/teddy/./.nvidia-xinitrc
@@ -19,6 +17,8 @@
 /home/teddy/./.calcurse/hooks
 /home/teddy/./.calcurse/conf
 /home/teddy/./.calcurse/keys
+/home/teddy/./.calcurse/notes
+/home/teddy/./.calcurse/todo
 /home/teddy/./.gdfuse/default/config
 /home/teddy/./.local/share/applications
 /home/teddy/./.config/conky

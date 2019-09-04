@@ -11,10 +11,10 @@ __config__
 + __feh__ - _shortcuts for feh_
 + __fontconfig__ - _fonts configuration files_
 + __gtk-3.0__ - _gtk 3 settings file_
-+ __i3__ - _configuration files required by i3-wm_
++ __i3__ - _configuration files required by i3-wm. Check also [i3 configuration info](.config/i3/README.md) for more information_
   - __lockscreen__ - _lock screen background image_
   - __themes__ - _themes used for i3-wm customization_
-  - __wallpaper__ - _wallpapers for 2 displays_
+  - __wallpaper__ - _wallpapers for 2 displays. Check [info](.config/i3/wallpaper/README.md) for more details_
 + __i3blocks__ - _configuration file used by i3blocks_
 + __mpv__ - _configuration file used by MPV_
 + __newsboat__ - _configuration file used by newsboat_
@@ -40,10 +40,9 @@ __local__
 + __share__
   + __applications__
 
-__scripts__ - _some scripts used in i3-wm workflow. Check inside for more information_
+__scripts__ - _some scripts used in i3-wm workflow. Check [scrips info](.scripts/README.md) for more details._
 
 __vim__
 
-+ ___autoload___
-
++ ___autoload___ - _contains plug.vim plugins used for plugins installation in vim._
 

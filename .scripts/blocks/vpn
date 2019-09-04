@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# Display the VPN state (on/off)
+#
+
+vpnc_file='/var/run/vpnc.pid'
+
+if [ -e "${vpnc_file}" ]; then
+  echo "on"
+fi

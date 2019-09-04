@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# Display the load average of the system
+#
+
+INSTANCE="${BLOCK_INSTANCE:-1}"
+urgent_val=90
+
+load=$(cat /proc/loadavg | awk -F ' ' '{print $'"${INSTANCE}"'}')
+if [ "${load}" != "" ]; then
+  load_perc=$(echo "scale=0; ${LOAD} * 100" | bc -l)
+  load_perc=${LOAD_PERC%.*}
+
+  echo "${load}"
+
+  if [ "${load_perc}" -ge "${urgent_val}" ]; then
+    exit 33
+  fi
+fi

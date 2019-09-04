@@ -1,8 +1,0 @@
-#!/bin/sh
-
-KERNEL=$(uname -r)
-
-if [ "${KERNEL}" != "" ]; then
-  echo "${KERNEL}"
-fi
-

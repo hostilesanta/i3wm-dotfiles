@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# Rofi show ssh window
+#
+
+rofi -show ssh

@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# Display the network state (wireless and wired)
+#
+
+device="${BLOCK_INSTANCE:-wlan0}"
+status=$(cat /sys/class/net/"${device}"/operstate)
+urgent_value=20
+
+if [ "${status}" = "up" ]; then
+  if [ -d "/sys/class/net/${device}/wireless" ]; then
+    quality=$(grep "${device}" /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
+    echo "✔️ ${quality}%"
+
+    if [ "${quality}" -le "${urgent_value}" ]; then
+      exit 33
+    fi
+  else
+    echo "✔️ "
+  fi
+else
+  echo "✖️ "
+fi

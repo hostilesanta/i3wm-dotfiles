@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+# Display the battery percentage.
+#
+# Font Awesome(no emoji)            
+
+bat=0
+bat_info=$(acpi -b | grep "Battery ${bat}")
+bat_state=$(echo "${bat_info}" | grep -wo "Full\|Charging\|Discharging")
+bat_power=$(echo "${bat_info}" | grep -o '[0-9]\+%' | tr -d '%')
+urgent_val=15
+
+main()
+{
+   if [ "${bat_state}" = "Charging" ]; then
+      echo "🔌$(check_capacity)%"
+   elif [ "${bat_state}" = "Discharging" ]; then
+      echo "🔋$(check_capacity)%"
+   else
+      echo "⚡$(check_capacity)%"
+   fi
+}
+
+check_capacity()
+{
+   local _result="${bat_power}"
+
+   if [ "${bat_power}" -lt ${urgent_val} ] && [ "${bat_state}" = "Discharging" ]; then
+      notify-send --urgency=critical "🔌 Battery low !" "Plug the charging cable !"
+   fi
+
+   echo "${_result}"
+}
+
+main "$@"
+

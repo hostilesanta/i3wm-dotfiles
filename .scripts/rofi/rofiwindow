@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# Rofi show active windows
+#
+
+rofi -show window

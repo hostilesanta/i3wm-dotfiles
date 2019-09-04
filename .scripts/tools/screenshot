@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# Perform a screenshot and save the file to the below dir location
+# Options:
+# -e  = all display
+# -ue = focused window
+#
+
+dir="/home/teddy/Pictures/screenshots"
+
+if [ ! -d "${dir}" ]; then
+   notify-send --urgency=critical "Directory ${dir} don't exist." "Create ${dir} before taking a screenshot !"
+   exit 1
+fi
+
+if [ "$1" = "-e" ]; then
+   scrot "$1" 'mv $f /home/teddy/Pictures/screenshots'
+   notify-send "Screenshot taken !" "Check your $HOME/Pictures/Screenshots."
+fi
+
+if [ "$1" = "-ue" ]; then
+   scrot "$1" 'mv $f /home/teddy/Pictures/screenshots'
+   notify-send "Screenshot taken !" "Check your $HOME/Pictures/Screenshots."
+fi
+
+

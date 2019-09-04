@@ -1,0 +1,7 @@
+#!/bin/sh
+#
+# Rofi ask password dialog window
+#
+
+rofi -dmenu -password -no-fixed-num-lines -p "$(printf "$1" | sed s/://)"
+

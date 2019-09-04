@@ -1,0 +1,57 @@
+#!/bin/sh
+#
+# Display the brightness intensity
+#
+
+# One of the following: xrandr, xbacklight, kernel
+method="xbacklight"
+urgent_val=10
+
+# Left click
+if [ "${BLOCK_BUTTON}" -eq 1 ]; then
+  xbacklight -inc 5
+# Right click
+elif [ "${BLOCK_BUTTON}" -eq 3 ]; then
+  xbacklight -dec 5
+fi
+
+if [ "${method}" = "xrandr" ]; then
+  device="${BLOCK_INSTANCE:-primary}"
+  xrandr_output=$(xrandr --verbose)
+
+  if [ "${device}" = "primary" ]; then
+    device=$(echo "${xrandr_output}" | grep 'primary' | head -n 1 | awk -F ' ' '{print $1}')
+  fi
+
+  curr_brightness=$(echo "${xrandr_output}" | grep "${device}" -A 5 | grep -i "Brightness" | awk -F ':' '{print $2}')
+elif [ "${method}" = "kernel" ]; then
+  device="${BLOCK_INSTANCE:-intel_backlight}"
+  max_brightness=$(cat /sys/class/backlight/"${device}"/max_brightness)
+  curr_brightness=$(cat /sys/class/backlight/"${device}"/brightness)
+elif [ "${method}" = "xbacklight" ]; then
+  curr_brightness=$(xbacklight -get)
+fi
+
+if [ "${curr_brightness}" -le 0 ]; then
+  exit
+fi
+
+if [ "${method}" = "xrandr" ]; then
+  percent=$(echo "scale=0;${curr_brightness} * 100" | bc -l)
+elif [ "${method}" = "kernel" ]; then
+  percent=$(echo "scale=0;${curr_brightness} / ${max_brightness} * 100" | bc -l)
+elif [ "${method}" = "xbacklight" ]; then
+  percent=$(echo "scale=0;${curr_brightness}" | bc -l)
+fi
+
+percent=${percent%.*}
+
+if [ "${percent}" -le 0 ]; then
+  exit
+fi
+
+echo "${percent}%"
+
+if [ "${percent}" -le "${urgent_val}" ]; then
+  exit 33
+fi

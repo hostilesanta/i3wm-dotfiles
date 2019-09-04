@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# Rofi clipboard manager
+#
+# Dependency: AUR: rofi-greenclip
+
+rofi -modi "clipboard:greenclip print" \
+     -show clipboard \
+     -run-command '{cmd}'
+

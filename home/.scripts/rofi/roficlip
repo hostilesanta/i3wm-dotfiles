@@ -1,8 +1,0 @@
-#!/bin/sh
-# 
-# Dependency: AUR: rofi-greenclip
-
-rofi -modi "clipboard:greenclip print" \
-     -show clipboard \
-     -run-command '{cmd}' 
-

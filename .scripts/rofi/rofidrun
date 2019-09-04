@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# Rofi run programs menu
+#
+
+rofi -show drun

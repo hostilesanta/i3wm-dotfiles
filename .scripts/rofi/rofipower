@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# Rofi power management menu
+#
+
+reboot="🔄 Reboot"
+shutdown="✖️ Shutdown"
+susp="💤 Suspend"
+lock="🔒 Lock"
+log_out="⏏️ Log out"
+
+options="${reboot},${shutdown},${susp},${lock},${log_out}"
+locker=betterlockscreen
+launch="$(rofiprompt "Choose option" "${options}")"
+
+case "${launch}" in
+   "${reboot}")
+      systemctl reboot
+      ;;
+   "${shutdown}")
+      systemctl poweroff
+      ;;
+   "${susp}")
+      ${locker} -s; #systemctl suspend
+      ;;
+   "${lock}")
+      ${locker} -l
+      ;;
+   "${log_out}")
+      i3-msg exit
+      ;;
+   *)
+      exit 1
+      ;;
+esac

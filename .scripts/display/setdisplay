@@ -1,0 +1,206 @@
+#!/bin/sh
+#
+# Enable the displays connected to your machine ports.
+# Modes supported:
+# - HDMI
+# - HDMI + EDP(left or right)
+# - Auto enable all connected displays
+# - Mirror displays
+# - Reset all displays to default state
+#
+# For NVIDIA cards enable/disable the compositor in order
+# to prevent screen tearing on external HDMI connected display
+# (check togglecompositor script)
+#
+# Start conky or polybar if installed.
+#
+
+conn_disp="$(xrandr | grep 'HDMI\|eDP' | awk '{print $1}')"
+no_conn_disp="$(xrandr | grep 'HDMI\|eDP' | awk '{print $1}' | wc -l)"
+
+hdmi="$(xrandr | grep HDMI | awk '{print $1}')"
+hdmi_res="$(xrandr | awk '/HDMI/ {getline; print $1}')"
+hdmi_rate=144
+
+edp="$(xrandr | grep eDP | awk '{print $1}')"
+edp_res="$(xrandr | awk '/eDP/ {getline; print $1}')"
+edp_rate=60
+
+bg_disp1="${HOME}/.config/i3/wallpaper/hdmi.png"
+bg_disp2="${HOME}/.config/i3/wallpaper/edp.png"
+
+conky_hdmi="${HOME}/.config/conky/.conky_hdmi"
+conky_hdmi_edp_left="${HOME}/.config/conky/.conky_hdmi_edp-left"
+conky_edp="${HOME}/.config/conky/.conky_notebook"
+
+delay="2s"
+
+main()
+{
+   case "$1" in
+      "H")
+         set_hdmi
+         ;;
+      "E")
+         set_edp
+         ;;
+      "HER")
+         set_display_pos HER
+         ;;
+      "HEL")
+         set_display_pos HEL
+         ;;
+      "A")
+         enable_all_displays
+         ;;
+      "R")
+         xrandr --auto
+         ;;
+      "M")
+         mirror_display
+         ;;
+      "T")
+         toggle_display
+         ;;
+      *)
+         help_msg
+         exit 1
+         ;;
+   esac
+
+   i3-msg restart
+}
+
+set_hdmi()
+{
+   [ -z "${hdmi}" ] && exit 1
+   togglecompositor Off
+   xrandr --output "${hdmi}" --primary --mode "${hdmi_res}" --rate ${hdmi_rate} \
+          --output "${edp}" --off
+   togglecompositor On
+   feh --bg-fill "${bg_disp1}"
+   killall conky
+   sleep "${delay}"
+   conky -c "${conky_hdmi}"
+   #start_polybar H
+}
+
+set_edp()
+{
+   [ -z "${edp}" ] && exit 1
+   togglecompositor Off
+   xrandr --output "${edp}" --primary --mode "${edp_res}" --rate ${edp_rate} \
+          --output "${hdmi}" --off
+   feh --bg-fill "${bg_disp2}"
+   killall conky
+   sleep "${delay}"
+   conky -c "${conky_edp}"
+   #start_polybar E
+}
+
+set_display_pos()
+{
+   [ ${no_conn_disp} -lt 2 ] && exit 1
+
+   togglecompositor Off
+   killall conky
+
+   if [ "$1" = "HER" ]; then
+      xrandr --output "${hdmi}" --primary --mode "${hdmi_res}" --rate ${hdmi_rate} \
+             --output "${edp}" --mode "${edp_res}" --rate ${edp_rate} --right-of "${hdmi}"
+      sleep "${delay}"
+      conky -c "${conky_hdmi}"
+      #start_polybar HER
+   elif [ "$1" = "HEL" ]; then
+      xrandr --output "${hdmi}" --primary --mode "${hdmi_res}" --rate ${hdmi_rate} \
+             --output "${edp}" --mode "${edp_res}" --rate ${edp_rate} --left-of "${hdmi}"
+      sleep "${delay}"
+      conky -c "${conky_hdmi_edp_left}"
+      #start_polybar HEL
+   fi
+
+   togglecompositor On
+   feh --bg-fill "${bg_disp1}" --bg-fill "${bg_disp2}"
+}
+
+mirror_display()
+{
+   [ ${no_conn_disp} -lt 2 ] && exit 1
+   togglecompositor Off
+   xrandr --output "${edp}" --mode "${edp_res}" --fb "${edp_res}" \
+          --output "${hdmi}" --mode "${edp_res}" --same-as "${edp}"
+   togglecompositor On
+   feh --bg-fill "${bg_disp2}"
+   killall conky
+   sleep "${delay}"
+   conky -c "${conky_edp}"
+   #start_polybar E
+}
+
+enable_all_displays()
+{
+   if [ ${no_conn_disp} = 2 ]; then
+      #set_display_pos HEL
+      set_display_pos HER
+   else
+      toggle_display
+   fi
+}
+
+toggle_display()
+{
+   if [ "${hdmi}" = "HDMI-0" ]; then
+      set_hdmi
+   elif [ "${edp}" = "eDP-1-1" ]; then
+      set_edp
+   else
+      echo "Connected displays:"
+      echo "${conn_disp}"
+      exit 1
+   fi
+}
+
+start_polybar()
+{
+   killall -q polybar
+   # Wait until the processes have been shut down
+   while $(pgrep -u "${UID}" -x polybar >/dev/null); do
+      sleep 1;
+   done
+   # Launch polybar
+   case "${1}" in
+      "H")
+         polybar top-HDMI &
+         ;;
+      "E")
+         polybar top-EDP-p &
+         ;;
+      "HER")
+         polybar top-HDMI & polybar top-EDP
+         ;;
+      "HEL")
+         polybar top-HDMI & polybar top-EDP
+         ;;
+      *)
+         echo "Wrong parameter"
+         ;;
+   esac
+}
+
+help_msg()
+{
+  echo -e "Connected displays:\n${conn_disp}"
+  echo -e "Please choose one of the following display modes:"
+  echo -e "H   - enable HDMI display"
+  echo -e "E   - enable EDP display"
+  echo -e "HER - enable HDMI+EDP right"
+  echo -e "HEL - enable HDMI+EDP left"
+  echo -e "A   - enable all connected displays"
+  echo -e "R   - reset to default values. Enable all connected displays"
+  echo -e "M   - enable display mirroring mode"
+}
+
+# ----------------------------------------------------------------------------------
+
+main "$@"
+

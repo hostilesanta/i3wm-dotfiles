@@ -1,55 +1,55 @@
 conky.config = {
-    background =                true,
+   background =                true,
 
-    use_xft =                   true,
-    font =                      'LiberationMono:pixelsize=12',
-    xftalpha =                  1,
+   use_xft =                   true,
+   font =                      'LiberationMono:pixelsize=12',
+   xftalpha =                  1,
 
-    update_interval =           1,
-    total_run_times =           0,
- 
-    own_window =                true,
-    own_window_type =           'override',
-    own_window_transparent =    true,
-    own_window_argb_visual =    true,
-    own_window_hints =          'undecorated,below,sticky,skip_taskbar,skip_pager',
-    double_buffer =             true,
+   update_interval =           1,
+   total_run_times =           0,
 
-    draw_shades =               false,
-    draw_outline =              false,
-    draw_borders =              false,
-    draw_graph_borders =        true,
-    stippled_borders =          0,
-    border_width =              0,
- 
-    default_color =             '9dbed0',
-    default_shade_color =       'black',
-    default_outline_color =     'white',
+   own_window =                true,
+   own_window_type =           'override',
+   own_window_transparent =    true,
+   own_window_argb_visual =    true,
+   own_window_hints =          'undecorated,below,sticky,skip_taskbar,skip_pager',
+   double_buffer =             true,
 
-    no_buffers =                true,
-    cpu_avg_samples =           2,
-    net_avg_samples =           2,
-    override_utf8_locale =      true,
-    use_spacer =                'none',
- 
-    alignment =                 'top_right',
-    maximum_width =             230,
-    gap_x =                     20,
-    gap_y =                     100,
+   draw_shades =               true,
+   draw_outline =              false,
+   draw_borders =              false,
+   draw_graph_borders =        true,
+   stippled_borders =          0,
+   border_width =              0,
 
-    color1 =                    'dbd2d2',
-    color2 =                    'DC143C',
-    color3 =                    'green'
+   default_color =             '9dbed0',
+   default_shade_color =       'black',
+   default_outline_color =     'white',
+
+   no_buffers =                true,
+   cpu_avg_samples =           2,
+   net_avg_samples =           2,
+   override_utf8_locale =      true,
+   use_spacer =                'none',
+
+   alignment =                 'top_right',
+   maximum_width =             230,
+   gap_x =                     20,
+   gap_y =                     100,
+
+   color1 =                    'dbd2d2',
+   color2 =                    'DC143C',
+   color3 =                    'green'
 }
 
 conky.text = [[
    ${font FontAwesome:pixelsize=12}${font}${color1} $nodename ${hr}
- 
+
    ${font FontAwesome:pixelsize=12}${font}${color1} ${alignr}${kernel}
    ${font FontAwesome:pixelsize=12}${font}${color1} ${alignr}${uptime}
-   
+
    ${font FontAwesome:pixelsize=12}${font}${color1} CPU ${hr}
-   
+
    ${font}${color1}Frequency ${alignr}${freq} MHz
    ${font}${color1}Average ${alignr}${cpu}%
    ${color1}${cpugraph cpu0 26,205 DC143C DC143C 0.5 -l}
@@ -62,35 +62,35 @@ conky.text = [[
    ${font FontAwesome:pixelsize=12}${font}${color1} V ${cpu cpu5}% \
    ${alignr}${font FontAwesome:pixelsize=12}${font}${color1} VI ${cpu cpu6}%
    ${color1}${cpugraph cpu5  26,100 DC143C DC143C 0.5 -l} ${alignr}${cpugraph cpu6  26,100 DC143C DC143C 0.5 -l}
-   
+
    ${font}${color1}${top name 1} ${alignr} ${top cpu 1}%
    ${font}${color1}${top name 2} ${alignr} ${top cpu 2}%
    ${font}${color1}${top name 3} ${alignr} ${top cpu 3}%
    ${font}${color1}${top name 4} ${alignr} ${top cpu 4}%
    ${font}${color1}${top name 5} ${alignr} ${top cpu 5}%
-   
+
    ${font FontAwesome:pixelsize=12}${font}${color1} MEMORY ${hr}
-   
+
    ${font}${color1}Ram ${alignr}${mem}/${memmax} ${memperc}%
    ${color1}${membar 5}
-   
+
    ${font}${color1}${top name 1} ${alignr}${top mem 1}%
    ${font}${color1}${top name 2} ${alignr}${top mem 2}%
    ${font}${color1}${top name 3} ${alignr}${top mem 3}%
    ${font}${color1}${top name 4} ${alignr}${top mem 4}%
    ${font}${color1}${top name 5} ${alignr}${top mem 5}%
-   
+
    ${font FontAwesome:pixelsize=12}${font}${color1} STORAGE ${hr}
-   
+
    ${font FontAwesome:pixelsize=12}${font}${font}${color1} /boot/efi ${alignr}${fs_used /boot/efi}/${fs_size /boot/efi}
    ${color1}${fs_bar 5 /boot/efi}
    ${font FontAwesome:pixelsize=12}${font}${font}${color1} / ${alignr}${fs_used /}/${fs_size /} ${fs_used_perc /}%
    ${color1}${fs_bar 5 /}
    ${font FontAwesome:pixelsize=12}${font}${font}${color1} /home ${alignr}${fs_used /home}/${fs_size /home} ${fs_used_perc /home}%
    ${color1}${fs_bar 5 /home}
-   
+
    ${font FontAwesome:pixelsize=12}${font}${color1} NETWORK ${hr}
-   
+
    ${font FontAwesome:pixelsize=12}${font}${color1}\
    ${alignr}${if_existing /sys/class/net/enp7s0f1/operstate up}${addr enp7s0f1}${else}${font FontAwesome:pixelsize=12}${font}${endif}
    ${font FontAwesome:pixelsize=12}${font}${font}${color1} ${upspeed enp7s0f1} ${alignr}${font FontAwesome:pixelsize=12}${font} ${downspeed enp7s0f1}

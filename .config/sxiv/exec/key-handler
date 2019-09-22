@@ -1,4 +1,8 @@
 #!/bin/sh
+#
+# sxiv supports external key events.
+# First you have to press Ctrl-x to send the next key to the external key-handler.
+#
 
 while read file
 do
@@ -6,14 +10,14 @@ do
         "d")
                 mv "$file" $HOME/.local/share/Trash/files ;;
         "D")
-                rm "$file" ;; 
+                rm "$file" ;;
         "W")
-                cp "$file" $HOME/.config/i3/wallpaper/hdmi.png && 
-                feh --bg-scale "$HOME/.config/i3/wallpaper/hdmi.png" 
+                cp "$file" $HOME/.config/i3/wallpaper/hdmi.png &&
+                feh --bg-scale "$HOME/.config/i3/wallpaper/hdmi.png"
                 notify-send -i "$HOME/.config/i3/wallpaper/hdmi.png" "HDMI wallpaper changed !" ;;
         "w")
-                cp "$file" $HOME/.config/i3/wallpaper/eDP.png && 
-                feh --bg-scale "$HOME/.config/i3/wallpaper/eDP.png" 
+                cp "$file" $HOME/.config/i3/wallpaper/eDP.png &&
+                feh --bg-scale "$HOME/.config/i3/wallpaper/eDP.png"
                 notify-send -i "$HOME/.config/i3/wallpaper/eDP.png" "eDP wallpaper changed !" ;;
         "r")
                 convert -rotate 90 "$file" "$file" ;;
@@ -22,5 +26,5 @@ do
         "y")
                 echo -n "$file" | xclip -selection clipboard &&
                 notify-send "$file copied to clipboard ";;
-        esac    
-done  
+        esac
+done

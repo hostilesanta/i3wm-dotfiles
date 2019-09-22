@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Set as a cron job to check for new RSS entries for newsboat.
 #
@@ -9,10 +9,10 @@ export DISPLAY=:0;
 def_ip="$(ip r | grep -m 1 default | cut -d ' ' -f 3)"
 ping="$(ping -q -t 1 -c 1 "${def_ip}")"
 
-if [ "${ping}" ]; then
-   #/usr/bin/notify-send  "Updating RSS feeds..."
+if [[ "${ping}" ]]; then
+   #dunstify  "Updating RSS feeds..."
    /usr/bin/newsboat -x reload
-   #/usr/bin/notify-send "RSS feed update complete."
+   #dunstify "RSS feed update complete."
 else
    exit 1
 fi

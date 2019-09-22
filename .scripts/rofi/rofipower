@@ -1,17 +1,25 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Rofi power management menu
 #
 
-reboot="🔄 Reboot"
-shutdown="✖️ Shutdown"
-susp="💤 Suspend"
-lock="🔒 Lock"
-log_out="⏏️ Log out"
+reboot=" Reboot"
+shutdown=" Shutdown"
+susp=" Suspend"
+lock=" Lock"
+log_out=" Log Out"
 
 options="${reboot},${shutdown},${susp},${lock},${log_out}"
 locker=betterlockscreen
+locker_img="${HOME}/.config/i3/lockscreen"
 launch="$(rofiprompt "Choose option" "${options}")"
+
+check_locker()
+{
+   if [[ ! -d "${HOME}/.cache/i3lock" ]]; then
+      ${locker} -u "${locker_img}"
+   fi
+}
 
 case "${launch}" in
    "${reboot}")
@@ -21,9 +29,10 @@ case "${launch}" in
       systemctl poweroff
       ;;
    "${susp}")
-      ${locker} -s; #systemctl suspend
+      ${locker} -s
       ;;
    "${lock}")
+      check_locker
       ${locker} -l
       ;;
    "${log_out}")
@@ -33,3 +42,4 @@ case "${launch}" in
       exit 1
       ;;
 esac
+

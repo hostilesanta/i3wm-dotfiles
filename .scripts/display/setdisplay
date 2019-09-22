@@ -1,22 +1,23 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Enable the displays connected to your machine ports.
 # Modes supported:
 # - HDMI
 # - HDMI + EDP(left or right)
 # - Auto enable all connected displays
+# - Toggle between connected displays
 # - Mirror displays
 # - Reset all displays to default state
 #
 # For NVIDIA cards enable/disable the compositor in order
-# to prevent screen tearing on external HDMI connected display
+# to prevent screen tearing on connected display
 # (check togglecompositor script)
 #
 # Start conky or polybar if installed.
 #
 
-conn_disp="$(xrandr | grep 'HDMI\|eDP' | awk '{print $1}')"
-no_conn_disp="$(xrandr | grep 'HDMI\|eDP' | awk '{print $1}' | wc -l)"
+usable_disp="$(xrandr | grep 'HDMI\|eDP' | awk '{print $1}')"
+total_usable_disp="$(xrandr | grep 'HDMI\|eDP' | awk '{print $1}' | wc -l)"
 
 hdmi="$(xrandr | grep HDMI | awk '{print $1}')"
 hdmi_res="$(xrandr | awk '/HDMI/ {getline; print $1}')"
@@ -73,11 +74,11 @@ main()
 
 set_hdmi()
 {
-   [ -z "${hdmi}" ] && exit 1
-   togglecompositor Off
+   [[ -z "${hdmi}" ]] && exit 1
+   togglecompositor off
    xrandr --output "${hdmi}" --primary --mode "${hdmi_res}" --rate ${hdmi_rate} \
           --output "${edp}" --off
-   togglecompositor On
+   togglecompositor on
    feh --bg-fill "${bg_disp1}"
    killall conky
    sleep "${delay}"
@@ -87,10 +88,11 @@ set_hdmi()
 
 set_edp()
 {
-   [ -z "${edp}" ] && exit 1
-   togglecompositor Off
+   [[ -z "${edp}" ]] && exit 1
+   togglecompositor off
    xrandr --output "${edp}" --primary --mode "${edp_res}" --rate ${edp_rate} \
           --output "${hdmi}" --off
+   togglecompositor on
    feh --bg-fill "${bg_disp2}"
    killall conky
    sleep "${delay}"
@@ -100,18 +102,18 @@ set_edp()
 
 set_display_pos()
 {
-   [ ${no_conn_disp} -lt 2 ] && exit 1
+   [[ ${total_usable_disp} -lt 2 ]] && exit 1
 
-   togglecompositor Off
+   togglecompositor off
    killall conky
 
-   if [ "$1" = "HER" ]; then
+   if [[ "$1" = "HER" ]]; then
       xrandr --output "${hdmi}" --primary --mode "${hdmi_res}" --rate ${hdmi_rate} \
              --output "${edp}" --mode "${edp_res}" --rate ${edp_rate} --right-of "${hdmi}"
       sleep "${delay}"
       conky -c "${conky_hdmi}"
       #start_polybar HER
-   elif [ "$1" = "HEL" ]; then
+   elif [[ "$1" = "HEL" ]]; then
       xrandr --output "${hdmi}" --primary --mode "${hdmi_res}" --rate ${hdmi_rate} \
              --output "${edp}" --mode "${edp_res}" --rate ${edp_rate} --left-of "${hdmi}"
       sleep "${delay}"
@@ -119,17 +121,17 @@ set_display_pos()
       #start_polybar HEL
    fi
 
-   togglecompositor On
+   togglecompositor on
    feh --bg-fill "${bg_disp1}" --bg-fill "${bg_disp2}"
 }
 
 mirror_display()
 {
-   [ ${no_conn_disp} -lt 2 ] && exit 1
-   togglecompositor Off
+   [[ ${total_usable_disp} -lt 2 ]] && exit 1
+   togglecompositor off
    xrandr --output "${edp}" --mode "${edp_res}" --fb "${edp_res}" \
           --output "${hdmi}" --mode "${edp_res}" --same-as "${edp}"
-   togglecompositor On
+   togglecompositor on
    feh --bg-fill "${bg_disp2}"
    killall conky
    sleep "${delay}"
@@ -139,7 +141,7 @@ mirror_display()
 
 enable_all_displays()
 {
-   if [ ${no_conn_disp} = 2 ]; then
+   if [[ ${total_usable_disp} = 2 ]]; then
       #set_display_pos HEL
       set_display_pos HER
    else
@@ -149,14 +151,17 @@ enable_all_displays()
 
 toggle_display()
 {
-   if [ "${hdmi}" = "HDMI-0" ]; then
+   local _hdmi_conn="$(xrandr | grep ${hdmi} | awk '{print $2}')"
+   local _edp_conn="$(xrandr | grep ${edp} | awk '{print $2}')"
+
+   if [[ "${_hdmi_conn}" = "connected" ]]; then
       set_hdmi
-   elif [ "${edp}" = "eDP-1-1" ]; then
+   elif [[ "${_edp_conn}" = "connected" ]]; then
       set_edp
    else
       echo "Connected displays:"
-      echo "${conn_disp}"
-      exit 1
+      echo "${usable_disp}"
+      xrandr --auto
    fi
 }
 
@@ -189,13 +194,14 @@ start_polybar()
 
 help_msg()
 {
-  echo -e "Connected displays:\n${conn_disp}"
+  echo -e "Connected displays:\n${usable_disp}"
   echo -e "Please choose one of the following display modes:"
   echo -e "H   - enable HDMI display"
   echo -e "E   - enable EDP display"
   echo -e "HER - enable HDMI+EDP right"
   echo -e "HEL - enable HDMI+EDP left"
   echo -e "A   - enable all connected displays"
+  echo -e "T   - toggle between connected displays"
   echo -e "R   - reset to default values. Enable all connected displays"
   echo -e "M   - enable display mirroring mode"
 }

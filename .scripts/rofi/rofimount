@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 #
-# Create ROFI menu for mounting device to $mount_dir( create it if it doesn't exists)
-# Enter a dir name in order to create a mount point or use an existing one
+# Rofi menu for mounting devices like USB, android.
+# Specify another $mount_dir if you don't want the default one.
 #
 # Dependencies: AUR: simple-mtpfs for mounting android devices
 
@@ -12,13 +12,16 @@ usb_dev="$(lsblk -rpo "name,type,size,mountpoint" | awk '$1 !~ "sda|nvm" && $2 =
 
 main()
 {
-   if [ -z "${usb_dev}" ] && [ -z "${mtp_dev}" ]; then
+   if [[ ! -d "${mount_dir}" ]]; then
+      mkdir -p "${mount_dir}"
+   fi
+   if [[ -z "${usb_dev}" ]] && [[ -z "${mtp_dev}" ]]; then
       echo "No USB drive(s) or Android device(s) detected"
-      notify-send --urgency=critical "No connected devices !!!" "No USB drive(s) or Android device(s) detected."
-   elif [ -n "${usb_dev}" ] && [ -n "${mtp_dev}" ]; then
+      dunstify --urgency=critical "No connected devices !!!" "No USB drive(s) or Android device(s) detected."
+   elif [[ -n "${usb_dev}" ]] && [[ -n "${mtp_dev}" ]]; then
       echo "USB drive(s) and Android device(s) detected"
       choose_type
-   elif [ -n "${mtp_dev}" ]; then
+   elif [[ -n "${mtp_dev}" ]]; then
       echo "Android device detected"
       mount_android
    else
@@ -30,17 +33,17 @@ main()
 get_mount_point()
 {
    local _mountpoint="$(rofiprompt "Type mount point in \"${mount_dir}\"")"
-   if [ -z "${_mountpoint}" ]; then
-      notify-send --urgency=critical "Mount failed !!!" "You need to create a mount point in order to mount the device."
+   if [[ -z "${_mountpoint}" ]]; then
+      dunstify --urgency=critical "Mount failed !!!" "You need to create a mount point in order to mount the device."
       exit 1
    fi
 
-   if [ ! -d "${mount_dir}/${_mountpoint}" ]; then
+   if [[ ! -d "${mount_dir}/${_mountpoint}" ]]; then
       local _yesno="$(rofiprompt "\"${_mountpoint}\" does not exists. Create it ?" "Yes,No")"
-      if [ "${_yesno}" = "Yes" ]; then
+      if [[ "${_yesno}" = "Yes" ]]; then
          mkdir -p "${mount_dir}/${_mountpoint}"
       else
-         notify-send --urgency=critical "Mount failed !!!" "You need to create a mount point in order to mount the device."
+         dunstify --urgency=critical "Mount failed !!!" "You need to create a mount point in order to mount the device."
          exit 1
       fi
    fi
@@ -51,7 +54,7 @@ get_mount_point()
 mount_usb()
 {
    local _device="$(rofiprompt "Choose usb drive to mount" "${usb_dev}" | awk '{print $1}')"
-   if [ -z "${_device}" ]; then
+   if [[ -z "${_device}" ]]; then
       exit 1
    fi
 
@@ -60,10 +63,10 @@ mount_usb()
    sudo -A mount "${_device}" "${_mountpoint}"
 
    local _checkusbmount="$(lsblk -rpo "mountpoint" "${_device}" | awk 'FNR == 2 {print $1}')"
-   if [ -z "${_checkusbmount}" ]; then
-      notify-send --urgency=critical "Mount failed !!!" "$(printf "Failed to mount ${_device} to\n${_mountpoint}.")"
+   if [[ -z "${_checkusbmount}" ]]; then
+      dunstify --urgency=critical "Mount failed !!!" "$(printf "Failed to mount ${_device} to\n${_mountpoint}.")"
    else
-      notify-send "Device mounted !!!" "$(printf "${_device} mounted to\n${_mountpoint}.")"
+      dunstify "Device mounted !!!" "$(printf "${_device} mounted to\n${_mountpoint}.")"
    fi
 }
 
@@ -78,10 +81,10 @@ mount_android()
    local _devicedescr="$(echo "${_chosendev}" | cut -d : -f 2 | sed -e 's/^[[:space:]]*//')"
    local _checkmtpmount="$(grep simple-mtpfs /etc/mtab)"
 
-   if [ -z "${_checkmtpmount}" ]; then
-      notify-send --urgency=critical "Mount failed !!!" "$(printf "Failed to mount ${_devicedescr} to\n${_mountpoint}.")"
+   if [[ -z "${_checkmtpmount}" ]]; then
+      dunstify --urgency=critical "Mount failed !!!" "$(printf "Failed to mount ${_devicedescr} to\n${_mountpoint}.")"
    else
-      notify-send "Device mounted !!!" "$(printf "${_devicedescr} mounted to\n${_mountpoint}.")"
+      dunstify "Device mounted !!!" "$(printf "${_devicedescr} mounted to\n${_mountpoint}.")"
    fi
 }
 

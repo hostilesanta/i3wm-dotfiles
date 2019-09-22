@@ -1,15 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Rofi display settings menu
 #
 
-disp1="💻 EDP"
-disp2="💻 HDMI"
-disp1_l_disp2_r="💻 EDP-L & 💻 HDMI-R"
-disp1_r_disp2_l="💻 EDP-R & 💻 HDMI-L"
-mirror="🔰 Mirror Screens"
-auto_detect="🔀 Auto Detect"
-reset="🔄 Reset"
+disp1="  EDP"
+disp2="  HDMI"
+disp1_l_disp2_r="  EDP-L    HDMI-R"
+disp1_r_disp2_l="  EDP-R    HDMI-L"
+mirror=" Mirror Screens"
+auto_detect=" Auto Detect"
+reset=" Reset"
 
 options="${disp1},${disp2},${disp1_l_disp2_r},${disp1_r_disp2_l},${mirror},${auto_detect},${reset}"
 launch="$(rofiprompt "Choose display" "${options}")"

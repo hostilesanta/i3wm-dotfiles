@@ -1,14 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Add torrent to transmission-daemon
 #
 
 proc_trans_da=$(pgrep -x transmission-da)
 
-if [ ${proc_trans_da} ]; then
+if [[ ${proc_trans_da} ]]; then
    transmission-daemon
-   notify-send "Starting transmission daemon ..." 
+   dunstify "Starting transmission daemon ..."
    sleep 3
    transmission-remote -a "$@"
-   notify-send "Torrent added."
+   dunstify "Torrent added."
 fi

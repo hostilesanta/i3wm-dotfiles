@@ -1,21 +1,21 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Display the state of bluetooth service: 'on/off'
 #
 
 # Left click
-if [ "${BLOCK_BUTTON}" -eq 1 ]; then
+if [[ "${BLOCK_BUTTON}" -eq 1 ]]; then
   sudo bluetooth on
 # Middle click
-elif [ "${BLOCK_BUTTON}" -eq 2 ]; then
+elif [[ "${BLOCK_BUTTON}" -eq 2 ]]; then
   sudo bluetooth toggle
 # Right click
-elif [ "${BLOCK_BUTTON}" -eq 3 ]; then
+elif [[ "${BLOCK_BUTTON}" -eq 3 ]]; then
   sudo bluetooth off
 fi
 
 status=$(bluetooth | grep -wo 'on')
 
-if [ "${status}" = "on" ]; then
+if [[ "${status}" = "on" ]]; then
   echo "on"
 fi

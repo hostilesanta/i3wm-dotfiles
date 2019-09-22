@@ -1,13 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 #
-# Use:
+# How to use:
 # backupfiles dotfiles        = backup dotfiles to $BACKUP_DOTFILES(check .profile)
 # backupfiles dotfiles /path  = backup dotfiles to specified path
 # backupfiles miscfiles /path = backup miscfiles to specified path
 #
 # Check home-files.txt, root-files.txt, misc-files.txt for the files you want to backup.
 # If backup directory doesn't exists, a new one will be created,
-# otherwise all existing file from dir will be overridden.
+# otherwise all existing file from backup location  will be overridden.
 #
 
 compress_types="gz/bz2/jpg/jpeg/ogg/mp[34]/mov/avi/rpm/deb/zip/"
@@ -26,16 +26,16 @@ main()
 {
    notify-send "Files backup started !!!"
 
-   if [ "$1" = "${DOTFILES_OPT}" ] && [ -z "$2" ]; then
+   if [[ "$1" = "${DOTFILES_OPT}" ]] && [[ -z "$2" ]]; then
       backup_dotfiles "${BACKUP_DOTFILES}"
-   elif [ "$1" = "${DOTFILES_OPT}" ] && [ -n "$2" ]; then
+   elif [[ "$1" = "${DOTFILES_OPT}" ]] && [[ -n "$2" ]]; then
       backup_dotfiles "$2"
-   elif [ "$1" = "${MISCFILES_OPT}" ] && [ -z "$2" ]; then
+   elif [[ "$1" = "${MISCFILES_OPT}" ]] && [[ -z "$2" ]]; then
       echo "Please provide the location where to backup !"
       exit 1
-   elif [ "$1" = "${MISCFILES_OPT}" ] && [ -n "$2" ]; then
+   elif [[ "$1" = "${MISCFILES_OPT}" ]] && [[ -n "$2" ]]; then
       backup_miscfiles "$2"
-   elif [ -z "$1" ] || [ "$1" != "${DOTFILES_OPT}" ] || [ "$1" != "${MISCFILES_OPT}" ]; then
+   elif [[ -z "$1" ]] || [[ "$1" != "${DOTFILES_OPT}" ]] || [[ "$1" != "${MISCFILES_OPT}" ]]; then
       help_msg
       notify-send --urgency=CRITICAL "Files backup failed !!!"
       exit 1
@@ -81,14 +81,14 @@ backup_miscfiles()
    copy_files "${misc_files}" "${_backup_dir}" "${log_miscfiles}"
 }
 
-create_dir(){ [ ! -d "$1" ] && mkdir -p "$1"; }
+create_dir(){ [[ ! -d "$1" ]] && mkdir -p "$1"; }
 
-remove_file(){ [ -f "$1" ] &&  rm "$1"; }
+remove_file(){ [[ -f "$1" ]] &&  rm "$1"; }
 
 copy_files()
 {
    while read -r line; do
-      [ "$(echo "${line}" | grep "^#")" ] && continue
+      [[ "$(echo "${line}" | grep "^#")" ]] && continue
       exe_rsync "${line}" "$2" "$3"
    done < "$1"
 }

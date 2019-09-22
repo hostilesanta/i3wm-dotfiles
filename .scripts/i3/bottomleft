@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script move the selected window to the bottom left of the screen.
 #

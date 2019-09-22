@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Transmission can be set to invoke a script when downloads complete. The environment variables supported are:
 #
@@ -10,4 +10,4 @@
 # $TR_TORRENT_NAME
 #
 
-notify-send "✔️ Transmission-daemon" "$TR_TORRENT_NAME has finished !"
+dunstify "✔️ Transmission-daemon" "$TR_TORRENT_NAME has finished !"

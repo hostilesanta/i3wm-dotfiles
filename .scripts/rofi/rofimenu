@@ -1,23 +1,24 @@
-#!/bin/sh
+#!/bin/bash
 #
-# Rofi general menu (centralize all rofi menus)
+# Rofi general menu
 #
 
-window="📂 Window"
-ssh="🔒 Ssh"
-drun="🛠️ Applications"
-http="🌍 Http"
-clipboard="📋 Clipboard"
-disp="💻 Display"
-power="🔌 Power Management"
+window=" Show Active Windows"
+ssh=" Show Active Ssh Sessions"
+drun=" Applications"
+http=" Http Search"
+clipboard=" Clipboard"
+disp="  Display"
+power=" Power Management"
 #network="🖧 Network Manager"
-mount="📥 Mount Devices"
-umount="📤 Unmount Devices"
-calc="🖩 Calculator"
+mount=" Mount Devices"
+umount=" Unmount Devices"
+calc=" Calculator"
+torrent=" Torrent"
 
-options="${window},${ssh},${drun},${http}, \
-${clipboard},${disp},${power}, \
-${mount},${umount},${calc} \
+options="${window},${ssh},${drun},${http},\
+${clipboard},${disp},${power},${mount},\
+${umount},${calc},${torrent}\
 "
 
 launch="$(rofiprompt "Choose option" "${options}")"
@@ -54,6 +55,9 @@ case "${launch}" in
       ;;
    "${calc}") # Depends: AUR:rofi-calc
       "${SCRIPTS}"/rofi/roficalc
+      ;;
+   "${torrent}")
+      "${SCRIPTS}"/rofi/rofitorrent
       ;;
    *)
       exit 1

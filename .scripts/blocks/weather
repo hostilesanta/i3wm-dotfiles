@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Based on http://openweathermap.org/current
 # Check on http://openweathermap.org/find
 #
@@ -33,17 +33,17 @@ get_weather()
    echo "$(echo "$1" | grep "$2")"
 }
 
-if [ "$(get_weather "${weather_main}" "Snow")" ]; then
+if [[ "$(get_weather "${weather_main}" "Snow")" ]]; then
    echo "${weather_city} ${icon_snow} ${weather_temp}${symbol_celsius}"
-elif [ "$(get_weather "${weather_main}" "Rain")" ] || [ "$(get_weather "${WEATHER_MAIN}" "Drizzle")" ]; then
+elif [[ "$(get_weather "${weather_main}" "Rain")" ]] || [[ "$(get_weather "${WEATHER_MAIN}" "Drizzle")" ]]; then
    echo "${weather_city} ${icon_rainy} ${weather_temp}${symbol_celsius}"
-elif [ "$(get_weather "${weather_main}" "Cloud")" ]; then
+elif [[ "$(get_weather "${weather_main}" "Cloud")" ]]; then
    echo "${weather_city} ${icon_cloudy} ${COLOR}${weather_temp}${symbol_celsius}"
-elif [ "$(get_weather "${weather_main}" "Clear")" ]; then
+elif [[ "$(get_weather "${weather_main}" "Clear")" ]]; then
    echo "${weather_city} ${icon_sunny} ${weather_temp}${symbol_celsius}"
-elif [ "$(get_weather "${weather_main}" "Fog")" ] || [ "$(get_weather "${WEATHER_MAIN}" "Mist")" ]; then
+elif [[ "$(get_weather "${weather_main}" "Fog")" ]] || [[ "$(get_weather "${WEATHER_MAIN}" "Mist")" ]]; then
    echo "${weather_city} ${icon_fog} ${weather_temp}${symbol_celsius}"
-elif [ $(get_weather "${weather_main}" "Storm") ] || [ $(get_weather "${WEATHER_MAIN}" "storm") ]; then
+elif [[ $(get_weather "${weather_main}" "Storm") ]] || [[ $(get_weather "${WEATHER_MAIN}" "storm") ]]; then
    echo "${weather_city} ${icon_storm} ${weather_temp}${symbol_celsius}"
 else
    echo "${weather_city} ${weather_main} ${weather_temp}${symbol_celsius}"

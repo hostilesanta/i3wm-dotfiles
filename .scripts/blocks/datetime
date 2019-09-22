@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Display the date and time
 #
 
-format="${BLOCK_INSTANCE:-%H:%M }"
+format="${BLOCK_INSTANCE:-%H:%M}"
 datetime=$(date "+${format}")
 
 echo "${datetime}"

@@ -18,19 +18,19 @@ while read RESULT_LINE; do
   TOTAL_TEMP=$(echo "scale=2;${TOTAL_TEMP}+${CURRENT_TEMP}" | bc -l)
   IS_CRITICAL=$(echo "scale=0;${CURRENT_TEMP}-${URGENT_VALUE} >= 0" | bc -l)
 
-  if [ "${IS_CRITICAL}" -eq 1 ]; then
+  if [[ "${IS_CRITICAL}" -eq 1 ]]; then
     IS_URGENT=1
   fi
 done <<< "$(echo "$TEMP_OUTPUT")"
 
 AVERAGE_TEMP=$(echo "scale=0;${TOTAL_TEMP}/${TOTAL_COUNT}" | bc -l)
 
-if [ "${TOTAL_COUNT}" -gt 1 ]; then
+if [[ "${TOTAL_COUNT}" -gt 1 ]]; then
   AVERAGE_TEMP="${AVERAGE_TEMP}"
 fi
 
 echo "${AVERAGE_TEMP}°C"
 
-if [ "${IS_URGENT}" -eq 1 ]; then
+if [[ "${IS_URGENT}" -eq 1 ]]; then
   exit 33
 fi

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Display the numpad state (on/off if numlock is pressed)
 #
@@ -9,17 +9,17 @@ capsLock=$(echo "${lockLine}" | awk -F ' ' '{print $4}')
 numLock=$(echo "${lockLine}" | awk -F ' ' '{print $8}')
 scrollLock=$(echo "${lockLine}" | awk -F ' ' '{print $12}')
 
-if [ "${type}" = "caps" ]; then
+if [[ "${type}" = "caps" ]]; then
   checkLock="${capsLock}"
-elif [ "${type}" = "num" ]; then
+elif [[ "${type}" = "num" ]]; then
   checkLock="${numLock}"
-elif [ "${type}" = "scroll" ]; then
+elif [[ "${type}" = "scroll" ]]; then
   checkLock="${scrollLock}"
 else
   exit
 fi
 
-if [ "${checkLock}" = "on" ]; then
+if [[ "${checkLock}" = "on" ]]; then
   echo "on"
 else
   echo "off"

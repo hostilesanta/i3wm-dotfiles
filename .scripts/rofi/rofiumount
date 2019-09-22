@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 #
-# Rofi menu for unmounting the devices from $mount_dir( remove mountpoints after unmounting )
+# Rofi menu for unmounting mounted devices.
+# $mount_dir must be the same as the one from rofimount script.
 #
-# Dependencies: use fusermount for unmounting android devices
+# Dependencies: fusermount for unmounting android devices
 #
 
 mount_dir="$HOME/Mount"
@@ -11,14 +12,14 @@ mtp_dev="$(grep simple-mtpfs /etc/mtab)"
 
 main()
 {
-   if [ -z "${mtp_dev}" ] && [ -z  "${usb_dev}" ]; then
+   if [[ -z "${mtp_dev}" ]] && [[ -z  "${usb_dev}" ]]; then
       echo "No drives to unomunt"
-      notify-send --urgency=critical "No connected devices !!!" "No device to unmount"
+      dunstify --urgency=critical "No connected devices !!!" "No device to unmount"
       exit 1
-   elif [ -n "${mtp_dev}" ] && [ -n "${usb_dev}" ]; then
+   elif [[ -n "${mtp_dev}" ]] && [[ -n "${usb_dev}" ]]; then
       echo "Unmountable USB drive(s) and Android device(s) detected"
       choose_type
-   elif [ -n "${mtp_dev}" ]; then
+   elif [[ -n "${mtp_dev}" ]]; then
       echo "Unmountable Android device(s) detected"
       umount_android
    else
@@ -29,11 +30,11 @@ main()
 
 rm_mountpoint()
 {
-   if [ -d "$1" ]; then
+   if [[ -d "$1" ]]; then
       local yesno="$(rofiprompt "Delete mountpoint \"$1\" ?" "Yes,No")"
-      if [ "${yesno}" = "Yes" ]; then
+      if [[ "${yesno}" = "Yes" ]]; then
          rmdir "$1"
-         notify-send "Mount point deleted !!!" "$1 was deleted."
+         dunstify "Mount point deleted !!!" "$1 was deleted."
       fi
    fi
 }
@@ -41,27 +42,27 @@ rm_mountpoint()
 umount_usb()
 {
    local _device="$(rofiprompt "Choose drive to unmount" "${usb_dev}" | awk '{print $1}')"
-   if [ -z "${_device}" ]; then
-       notify-send --urgency=critical "Unmount failed !!!" "No drive selected for unmount."
+   if [[ -z "${_device}" ]]; then
+       dunstify --urgency=critical "Unmount failed !!!" "No drive selected for unmount."
 
    else
       local _mountpoint="$(grep "${_device}" /etc/mtab | awk '{print $2}')"
       sudo -A umount "${_device}"
       rm_mountpoint "${_mountpoint}"
-      notify-send "Device unmounted !!!" "${_device} unmounted."
+      dunstify "Device unmounted !!!" "${_device} unmounted."
    fi
 }
 
 umount_android()
 {
    local _device="$(rofiprompt "Choose device to unmount" "$(awk '/simple-mtpfs/ {print $2}' /etc/mtab)")"
-   if [ -z "${_device}" ]; then
-      notify-send --urgency=critical "Unmount failed !!!" "No device selected for unmount."
+   if [[ -z "${_device}" ]]; then
+      dunstify --urgency=critical "Unmount failed !!!" "No device selected for unmount."
    else
       local _mountpoint="$(grep "${_device}" /etc/mtab | awk '{print $2}')"
       fusermount -u "${_device}"
       rm_mountpoint ${_mountpoint}
-      notify-send "Device unmounted !!!" "${_device} unmounted."
+      dunstify "Device unmounted !!!" "${_device} unmounted."
    fi
 }
 

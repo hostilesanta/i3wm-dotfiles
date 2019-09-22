@@ -1,6 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 #
-# Disable screen tearing by enabling ForceFullCompositionPipeline=On
+# Disable screen tearing by enabling ForceFullCompositionPipeline
+# Parameters:
+#  - param1: on/off = activate/deactivate
 #
 
 disp_rate=144
@@ -8,9 +10,8 @@ disp="$(xrandr | grep HDMI | awk '{print $1}')"
 disp_res="$(xrandr | awk '/HDMI/ {getline; print $1}')"
 mon_pos="$(xrandr | grep HDMI | awk '{print $4}' | sed 's/\w*x\w*//g')"
 
-if [ "${1}" = "On" ] || [ "${1}" = "Off" ]; then
+if [[ "${1}" = "on" ]] || [[ "${1}" = "off" ]]; then
    nvidia-settings --assign CurrentMetaMode="${disp}:${disp_res}_${disp_rate} ${mon_pos} { ForceFullCompositionPipeline = ${1} }"
-   #nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = ${1} }"
 else
-   echo "Invalid parameter: choose between 'On' or 'Off'."
+   echo "Invalid parameter: choose between 'on' or 'off'."
 fi

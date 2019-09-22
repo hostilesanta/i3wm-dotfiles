@@ -11,11 +11,6 @@
 /home/teddy/./.bash_aliases
 /home/teddy/./.scripts
 /home/teddy/./.vim/autoload
-/home/teddy/./.calcurse/hooks
-/home/teddy/./.calcurse/conf
-/home/teddy/./.calcurse/keys
-/home/teddy/./.calcurse/notes
-/home/teddy/./.calcurse/todo
 /home/teddy/./.local/share/applications
 /home/teddy/./.config/conky
 /home/teddy/./.config/dunst
@@ -43,3 +38,8 @@
 /home/teddy/./.config/transmission-daemon/settings.json
 /home/teddy/./.config/sxhkd
 /home/teddy/./.config/gdfuse/default/config
+/home/teddy/./.config/calcurse/hooks
+/home/teddy/./.config/calcurse/conf
+/home/teddy/./.config/calcurse/keys
+/home/teddy/./.config/calcurse/notes
+/home/teddy/./.config/calcurse/todo

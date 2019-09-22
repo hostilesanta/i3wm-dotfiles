@@ -40,7 +40,7 @@
 # Apps shortcuts
    alias r='ranger'
    alias v='runvifm'
-   alias cc='calcurse'
+   alias cc='calcurse -D $CONFIG/calcurse'
    alias nb='newsboat'
    alias trc='transmission-remote-cli'
 

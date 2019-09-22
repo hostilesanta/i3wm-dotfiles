@@ -6,32 +6,26 @@
    alias hwinfolong='hwinfo'
    alias hwinxi='inxi -Fx'
    alias netspeed='speedtest-cli'
-   alias gpuinfo='glxinfo -B'    
+   alias gpuinfo='glxinfo -B'
 
-# Pacman
-   alias pup='sudo pacman -Syu'
-   alias pin='sudo pacman -S'
-   alias prm='sudo pacman -Rns'
-   alias prma='sudo pacman -Rnsc'
-    
-# Free ram cache 
+# Free ram cache
    alias freeram='sudo sh -c "sync; echo 3 > /proc/sys/vm/drop_caches"'
-    
+
 # Trust keys
    alias importkey='gpg --recv-key' # <keyid>
    alias trustkey='gpg --lsign' # <keyid>
    alias importpkey='pacman-key --recv-key' # <KEYID>
    alias trustpkey='pacman-key --lsign' # <KEYID>
-    
+
 # Maintaining system
    # delete old pacman cache
-   alias deloldcache='sudo pacman -Sc'                        
+   alias deloldcache='sudo pacman -Sc'
    # delete all pacman cache
-   alias delcache='sudo pacman -Scc'                       
+   alias delcache='sudo pacman -Scc'
    # delete orphaned packages
-   alias delorphaned='sudo pacman -Rns $(pacman -Qtdq)'  
+   alias delorphaned='sudo pacman -Rns $(pacman -Qtdq)'
    # see orphaned packages
-   alias seeorphaned='pacman -Qtdq'                   
+   alias seeorphaned='pacman -Qtdq'
 
 # Mount disks
    alias mnt='udisksctl mount -b'
@@ -45,7 +39,7 @@
 
 # Apps shortcuts
    alias r='ranger'
-   alias v='$HOME/.config/vifm/scripts/vifmrun'
+   alias v='runvifm'
    alias cc='calcurse'
    alias nb='newsboat'
    alias trc='transmission-remote-cli'
@@ -59,23 +53,37 @@
    alias cfi='$EDITOR ~/.config/i3/config.base'
 
 # Misc
-   alias nx='nvidia-xrun' 
+   alias nx='nvidia-xrun' # only if you have nvidia-xrun installed( deprecated, use optimus-manager)
    alias sizeof='du -sh'
    #alias ls='ls --color=auto'
-   alias ls='lsd' 
+   alias ls='lsd'
    alias neo='neofetch'
+   alias neton='sudo togglenet on'
+   alias netoff='sudo togglenet off'
 
 # ----------------------------------------------------------------------------
+#
+# !!! NOTE: Extract into a script
+#
+#
+# current dir files
+sl()
+{
+   local _file="$(du -a  ./* | awk '{print $2}' | fzf)"
+   [[ -n "${_file}" ]] && $EDITOR "${_file}"
+}
+# .config dir files
+sc()
+{
+   local _file="$(du -a  /home/teddy/.config/* | awk '{print $2}' | fzf)"
+   [[ -n "${_file}" ]] && $EDITOR "${_file}"
+}
+# home dir files
+sh()
+{
+   local _file="$(du -a  "${HOME}"/* | awk '{print $2}' | fzf)"
+   [[ -n "${_file}" ]] && $EDITOR "${_file}"
+}
 
-# Local dir files
-sd() 
-{ 
-   local file="$(fzf)"
-   [ -n "${file}" ] && $EDITOR "${file}"
-}
-# .config dir files 
-sc() 
-{ 
-   local file="$(du -a  /home/teddy/.config/* | awk '{print $2}' | fzf)"
-   [ -n "${file}" ] && $EDITOR "${file}"
-}
+
+

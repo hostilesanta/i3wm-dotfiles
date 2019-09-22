@@ -1,15 +1,17 @@
 !--------------------------------------------------------------------------------------------
-! To apply changes execute "xrdb -load ~/.Xresources"
+! To apply changes execute xrdb -load ~/.Xresources
 !--------------------------------------------------------------------------------------------
 
 ! DPI settings
-Xft.dpi       : 100
-Xft.autohint  : 0
+Xft.dpi       : 96
+Xft.autohint  : false
 Xft.lcdfilter : lcddefault
-Xft.hintstyle : hintfull
-Xft.hinting   : 1
-Xft.antialias : 1
+Xft.hintstyle : hintslight
+Xft.hinting   : true
+Xft.antialias : true
 Xft.rgba      : rgb
+
+Xcursor.theme: Phoeton
 
 !--------------------------------------------------------------------------------------------
 ! Install:
@@ -45,16 +47,14 @@ URxvt.keysym.M-Escape      : perl:keyboard-select:activate
 !--------------------------------------------------------------------------------------------
 
 st.font                    : HackNerdFont:pixelsize=12:antialias=true:autohint=true:fixed=true
-st.alpha                   : 200
+st.alpha                   : 0.8
 
 !--------------------------------------------------------------------------------------------
-! Themes 
+! Themes
 !--------------------------------------------------------------------------------------------
 
 ! Gruvbox-dark modified
-! hard contrast         : *background : #1d2021
 *background             : #0d0f0f
-! soft contrast         : *background : #32302f
 *foreground             : #dbd2d2
 ! Black + DarkGrey
 *color0                 : #0d0f0f
@@ -78,7 +78,6 @@ st.alpha                   : 200
 *color6                 : #689d6a
 *color14                : #8ec07c
 ! LightGrey + White
-#*color7                 : #a89984
 *color7                 : #dbd2d2
 *color15                : #dbd2d2
 

@@ -331,6 +331,9 @@
 " Reload sxhkd
   autocmd BufWritePost *sxhkdrc !kill -USR1 $(pgrep -x sxhkd)
 
+" Preview .md files in Chromium( requires Markdown Preview extension installed in Chromium )
+  autocmd BufWritePost *.md !chromium --new-window %
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Useful shortcuts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -346,7 +349,11 @@
    map <C-p> "+P
 
 " Switch between buffers
-   nnoremap <S-Tab> :bn<CR>
+   map <leader>n :bn<CR>
+   map <Leader>p :bp<CR>
 
 " Navigate the completion menu from top
    let g:SuperTabDefaultCompletionType = '<c-n>'
+
+" Reindent the entire file
+   nnoremap <C-S-F> gg=G<CR>

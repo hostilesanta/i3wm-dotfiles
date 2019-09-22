@@ -35,8 +35,8 @@ default_floating_border         pixel 2
 floating_maximum_size           1200 x 600
 
 # Gaps (i3-gaps from AUR)
-gaps inner                      4
-gaps outer                      7
+gaps inner                      5
+gaps outer                      5
 #smart_gaps                      on
 #smart_borders                   on
 
@@ -51,16 +51,22 @@ popup_during_fullscreen 	     smart
 # FLOATING CRITERIA
 #--------------------------------------------------------------------------
 
-for_window [window_role="pop-up"]           floating enable
-for_window [window_role="dialog"]           floating enable
-for_window [window_role="splash"]           floating enable
+for_window [window_role="pop-up"]             floating enable
+for_window [window_role="dialog"]             floating enable
+for_window [window_role="splash"]             floating enable
 
-for_window [class="skypeforlinux"]          floating enable move position center
-for_window [class="Skype"]                  floating enable move position center
-for_window [class="Pavucontrol"]            floating enable
-for_window [class="Nitrogen"]               floating enable
-for_window [title="Network Connections"]    floating enable
-for_window [class="Eclipse"]                floating enable move position center
+for_window [class="skypeforlinux"]            floating enable move position center
+for_window [class="Skype"]                    floating enable move position center
+for_window [class="Pavucontrol"]              floating enable
+for_window [class="Nitrogen"]                 floating enable
+for_window [title="Network Connections"]      floating enable
+for_window [class="GParted"]                  floating enable
+for_window [class="Lxappearance"]             floating enable
+for_window [class="Manjaro Settings Manager"] floating enable
+for_window [class="qt5ct"]                    floating enable
+for_window [class="Pamac-manager"]            floating enable
+for_window [class="Qtconfig-qt4"]             floating enable
+for_window [class="(?i)virtualbox"]           floating enable
 
 #--------------------------------------------------------------------------
 # WORKSPACE
@@ -125,8 +131,12 @@ bindsym $mod+Shift+m bar mode toggle
 # Kill focused window
 bindsym $mod+Shift+q                kill
 
-bindsym $mod+plus                   scratchpad show
-bindsym $mod+Shift+plus             move scratchpad
+bindsym $mod+minus                  scratchpad show
+bindsym $mod+Shift+minus            move scratchpad
+
+# Change borders( note that on i3-gaps has some rendering issues )
+bindsym $mod+plus                   border normal
+bindsym $mod+Shift+plus             border pixel 1
 
 # Enter fullscreen mode for the focused container
 bindsym $mod+f                      fullscreen toggle
@@ -232,19 +242,6 @@ bindsym $mod+x [urgent=latest] 	   focus
 bindsym $mod+Shift+w 		         reload
 # Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r 		         restart
-
-#--------------------------------------------------------------------------
-# STARTUP APPS
-#--------------------------------------------------------------------------
-
-#exec --no-startup-id                xcompmgr
-# No blank screen when unused
-#exec --no-startup-id                xset -dpms
-#exec --no-startup-id                xset s off
-#exec --no-startup-id                nm-applet
-#exec --no-startup-id                greenclip daemon
-#exec --no-startup-id                numlockx on
-#exec --no-startup-id                ckb-next -b
 
 #--------------------------------------------------------------------------
 # WINDOW COLOR

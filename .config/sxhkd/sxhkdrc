@@ -32,15 +32,19 @@ super + {F1,shift+F1}
 super + {F2,shift+F2}
 		setdisplay {HER,HEL}
 # F3 - F4 defined in i3 config file
+# super + F3 			sticky bottom left window
+# super + Shift + F3 sticky bottom right window
+# super + F4 			sticky top left window
+# super + Shift + F4 sticky top right window
 # Mount/Umount devices
-super + {F9,shift+F9}
+super + {F10,shift+F10}
 		{rofimount,rofiumount}
 # Enable/disable transmission-daemon
 super + {F11,shift+F11}
-		transmission {--start,--stop}
+		transmission {start,stop}
 # Enable/disable nvidia composition pipeline (Disable screen tearing)
 super + {F12,shift+F12}
-		togglecompositor {On,Off}
+		togglecompositor {on,off}
 
 Print
 		screenshot -e
@@ -49,11 +53,11 @@ shift + Print
 
 # Multimedia keys
 XF86AudioRaiseVolume
-		pulsemixer --change-volume +5
+		togglevol 5 +
 XF86AudioLowerVolume
-		pulsemixer --change-volume -5
+		togglevol 5 -
 XF86AudioMute
-		pulsemixer --toggle-mute
+		togglevol m
 XF86MonBrightnessUp
 		light -A 2
 XF86MonBrightnessDown

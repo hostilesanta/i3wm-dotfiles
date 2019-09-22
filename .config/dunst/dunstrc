@@ -36,12 +36,12 @@
 
    # Shrink window if it's smaller than the width.  Will be ignored if
    # width is 0.
-   #shrink = yes
+   shrink = yes
 
    # The transparency of the window.  Range: [0; 100].
    # This option will only work if a compositing window manager is
    # present (e.g. xcompmgr, compiz, etc.).
-   transparency = 10
+   transparency = 20
 
    # The height of the entire notification.  If the height is smaller
    # than the font height and padding combined, it will be raised
@@ -165,7 +165,7 @@
    max_icon_size = 32
 
    # Paths to default icons.
-   icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/:/usr/share/icons/Adwaita/24x24/status/
+   icon_path = /home/teddy/.icons/Faba-Mono/16x16:/usr/share/icons/Adwaita/16x16/status/:/usr/share/icons/Adwaita/16x16/devices/
 
    ### History ###
 

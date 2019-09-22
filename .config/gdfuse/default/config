@@ -9,6 +9,7 @@ curl_debug_off=false
 data_directory=
 delete_forever_in_trash_folder=false
 desktop_entry_exec=
+disable_trash=false
 docs_file_extension=true
 document_format=odt
 document_icon=

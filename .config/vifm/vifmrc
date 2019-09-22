@@ -106,7 +106,7 @@
    mark p ~/Mount/hdd/common/Pictures
 
    mark c ~/.config
-   mark s ~/.scripts
+   mark s ~/.config/scripts
    mark b ~/.local/bin
 
 " ------------------------------------------------------------------------------

@@ -8,9 +8,9 @@
 /home/teddy/./.fehbg
 /home/teddy/./.bashrc
 /home/teddy/./.bash_aliases
-/home/teddy/./.scripts
 /home/teddy/./.local/share/applications
 /home/teddy/./.local/share/nvim/site
+/home/teddy/./.config/scripts
 /home/teddy/./.config/nvim
 /home/teddy/./.config/conky
 /home/teddy/./.config/dunst

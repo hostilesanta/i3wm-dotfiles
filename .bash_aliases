@@ -53,7 +53,7 @@
    alias umntgdrive='fusermount -u'         # ~/path to mount point
 
 # Config files
-   alias cfi='$EDITOR ~/.config/i3/config.base'
+   alias cfi='$EDITOR $CONFIG/i3/config.base'
 
 # Misc
    alias nx='nvidia-xrun' # only if you have nvidia-xrun installed( deprecated, use optimus-manager)
@@ -78,7 +78,7 @@ sl()
 # .config dir files
 sc()
 {
-   local _file="$(du -a  /home/teddy/.config/* | awk '{print $2}' | fzf)"
+   local _file="$(du -a  "${CONFIG}"/* | awk '{print $2}' | fzf)"
    [[ -n "${_file}" ]] && $EDITOR "${_file}"
 }
 # home dir files

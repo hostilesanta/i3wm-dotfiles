@@ -2,6 +2,6 @@
 home/teddy/./Development/projects/*.zip
 home/teddy/./Development/libraries/*.zip
 home/teddy/./Utilities/*.tar.gz
-home/teddy/Mount/hdd/common/./Documents
-home/teddy/Mount/hdd/common/./Pictures
-home/teddy/Mount/hdd/common/./Utilities
+#home/teddy/Mount/hdd/common/./Documents
+#home/teddy/Mount/hdd/common/./Pictures
+#home/teddy/Mount/hdd/common/./Utilities

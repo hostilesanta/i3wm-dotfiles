@@ -21,7 +21,7 @@ export TERMINAL="st"
 
 export CONFIG="${HOME}/.config"
 export GTK2_RC_FILES="${CONFIG}/gtk-2.0/gtkrc-2.0"
-export SCRIPTS="${HOME}/.scripts"
+export SCRIPTS="${CONFIG}/scripts"
 export BIN="${HOME}/.local/bin"
 export SUDO_ASKPASS="${SCRIPTS}/rofi/rofiaskpass"
 export DEV="${HOME}/Development"

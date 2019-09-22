@@ -43,6 +43,9 @@
    alias cc='calcurse -D $CONFIG/calcurse'
    alias nb='newsboat'
    alias trc='transmission-remote-cli'
+   if type nvim > /dev/null 2>&1; then
+      alias vim='nvim'
+   fi
 
 # Google Drive (AUR: google-drive-ocamlfuse)
 # (Run google-drive-ocamlfuse after first installation for init)

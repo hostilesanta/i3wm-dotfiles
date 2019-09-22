@@ -14,8 +14,8 @@
 
 # default apps
 export BROWSER="chromium"
-export EDITOR="vim"
-export VISUAL="vim"
+export EDITOR="nvim"
+export VISUAL="nvim"
 export FILE="vifm"
 export TERMINAL="st"
 

@@ -1,7 +1,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-   call plug#begin('~/.vim/plugged')
+   " For VIM ~/.vim.plugged
+   call plug#begin('~/.local/share/nvim/plugged')
       Plug 'vim-airline/vim-airline'          " Lean & mean status/tabline for vim that's light as air.
       Plug 'vim-airline/vim-airline-themes'   " Airline themes
       Plug 'scrooloose/nerdtree'              " Tree explorer

@@ -1,6 +1,5 @@
 # Use /./ for relative paths. On destination the dir hierarchy will be created starting from /./
 /home/teddy/./.Xresources
-/home/teddy/./.vimrc
 /home/teddy/./.profile
 /home/teddy/./.xinitrc
 /home/teddy/./.j4-make-config.rc
@@ -10,8 +9,9 @@
 /home/teddy/./.bashrc
 /home/teddy/./.bash_aliases
 /home/teddy/./.scripts
-/home/teddy/./.vim/autoload
 /home/teddy/./.local/share/applications
+/home/teddy/./.local/share/nvim/site
+/home/teddy/./.config/nvim
 /home/teddy/./.config/conky
 /home/teddy/./.config/dunst
 /home/teddy/./.config/feh

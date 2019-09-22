@@ -1,48 +1,51 @@
-# i3-wm dotfiles
+i3-wm dotfiles used in Manjaro Linux distribution
 
-i3 wm dotfiles used in Arch Linux distribution.
-
-__calcurse__ - _configuration file and shortcut keys used by calcurse_
+### Packages and files:
 
 __config__
 
-+ __conky__ - _configurations for 2 displays used by conky, a notebook display and an external one connected through HDMI_
-+ __dunst__ - _configuration required by dunst for notifications popups_
-+ __feh__ - _shortcuts for feh_
-+ __fontconfig__ - _fonts configuration files_
-+ __gtk-3.0__ - _gtk 3 settings file_
-+ __i3__ - _configuration files required by i3-wm. Check also [i3 configuration info](.config/i3/README.md) for more information_
-  - __lockscreen__ - _lock screen background image_
-  - __themes__ - _themes used for i3-wm customization_
-  - __wallpaper__ - _wallpapers for 2 displays. Check [info](.config/i3/wallpaper/README.md) for more details_
-+ __i3blocks__ - _configuration file used by i3blocks_
-+ __mpv__ - _configuration file used by MPV_
-+ __newsboat__ - _configuration file used by newsboat_
-+ __ranger__ - _configuration files and some scripts used by ranger file manager_
-  - __colorschemes__ - _colorschemes files used for ranger customization_
-+ __rofi__ - _configuration used by rofi_
-  - __themes__ - _themes used for rofi customization_
-+ __sxhkd__ - _global keyboard and mouse shortcuts used by i3-wm_
-+ __sxiv__ - _keyboard shortcuts used by sxiv_
-+ __transmission-daemon__ - _settings for transmission torrent daemon_
-+ __vifm__ - _vifm file manager configuration files_
-  - __colors__ - _colorschemes files used for vifm customization_
-  - __scripts__ - _scripts used in vifm app workflow_
-+ __youtube-dl__ - _configuration file used by youtube downloader_
-+ __youtube-viewer__ - _configuration file used by youtube viewer_
-+ __zathura__ - _configuration file used by zathura_
-
-
-__gdfuse__ - _configuration file used by gdfuse for mounting Google Drive_
++ __calcurse__ - configuration files and shortcut keys used by calcurse
++ __conky__ - configuration files for 2 displays used by conky, a notebook display and an external one connected through HDMI
++ __dunst__ - configuration files required by dunst for notifications popups
++ __feh__ - shortcuts for feh
++ __fontconfig__ - fonts configuration
++ __gdfuse__ - configuration file used by google-drive-ocamlfuse for mounting Google Drive
++ __gtk-3.0__ - gtk 3 theme configuration files
++ __gtk-2.0__ - gtk 2 theme configuration files
++ __i3__ - configuration files used by i3-wm. Check also [i3 configuration info](.config/i3/README.md) for more information
+  - __lockscreen__ - lock screen background image
+  - __themes__ - themes used for i3-wm customization
+  - __wallpaper__ - wallpapers for 2 displays. Check [info](.config/i3/wallpaper/README.md) for more details
++ __i3blocks__ - configuration files used by i3blocks
++ __mpv__ - configuration files used by MPV
++ __newsboat__ - configuration files used by newsboat
++ __nvim__ - configuration files used by neovim
++ __rofi__ - configuration files used by rofi
+  - __themes__ - themes used for rofi customization
++ __scripts__ - scripts used in i3-wm workflow. Check [scrips info](.config/scripts/README.md) for more details
++ __sxhkd__ - global keyboard and mouse shortcuts used by i3-wm
++ __sxiv__ - keyboard shortcuts used by sxiv
++ __transmission-daemon__ - settings for transmission torrent daemon
++ __vifm__ - configuration files used by vifm file manager
+  - __colors__ - colorschemes files used for vifm customization
+  - __scripts__ - scripts used in vifm app workflow
++ __youtube-dl__ - configuration files used by youtube downloader
++ __youtube-viewer__ - configuration files used by youtube viewer
++ __zathura__ - configuration files used by zathura
++ __git-completion.bash__ - autocomplete git commands in terminal
++ __greenclip.cfg__ - configuration file used by rofi clipboard manager
++ __mimeapps.list__ - overridden mimes
 
 __local__
 
 + __share__
-  + __applications__
+  + __applications__ - default apps in .desktop format used in mimeapps.list
+  + ___nvim___ - contains plug.vim plugin used for plugins installation in neovim.
 
-__scripts__ - _some scripts used in i3-wm workflow. Check [scrips info](.scripts/README.md) for more details._
-
-__vim__
-
-+ ___autoload___ - _contains plug.vim plugins used for plugins installation in vim._
-
++ __.Xresources__ - configuration for dpi, urxvt and st terminals, background theme etc
++ __.bash\_aliases__ - personal aliases
++ __.bashrc__ - configuration for shell session
++ __.fehbg__ - background image loading script used by feh
++ __.j4-make-config.rc__ - used by j4-make-config tool for loading the i3-wm theme
++ __.profile__ - configuration for shell environment loaded at startup
++ __.xinitrc__ - X server configuration loaded at startup

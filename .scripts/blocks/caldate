@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Display the date
 #
@@ -6,8 +6,8 @@
 format="${BLOCK_INSTANCE:-%Y-%m-%d}"
 date=$(date "+${format}")
 
-if [ "${BLOCK_BUTTON}" -eq 3 ]; then
+if [[ "${BLOCK_BUTTON}" -eq 3 ]]; then
    notify-send "$(date "+%A %d %B")"
 fi
 
-echo " ${date}"
+echo "${date}"

@@ -1,7 +1,0 @@
-# Use /./ for relative paths. On destination the dir hierarchy will be created starting from /./
-/etc/systemd/logind.conf
-/etc/pacman.conf
-#/etc/fstab
-#/etc/X11/nvidia-xorg.conf
-#/etc/X11/nvidia-xorg.conf.d
-#/etc/default/grub

@@ -5,7 +5,7 @@
 # backupfiles dotfiles /path  = backup dotfiles to specified path
 # backupfiles miscfiles /path = backup miscfiles to specified path
 #
-# Check home-files.txt, root-files.txt, misc-files.txt for the files you want to backup.
+# Check dotfiles.txt, miscfiles.txt for the files you want to backup.
 # If backup directory doesn't exists, a new one will be created,
 # otherwise all existing file from backup location  will be overridden.
 #
@@ -15,9 +15,8 @@ compress_types="gz/bz2/jpg/jpeg/ogg/mp[34]/mov/avi/rpm/deb/zip/"
 log_dotfiles="${HOME}/.backup_dotfiles.log"
 log_miscfiles="${HOME}/.backup_miscfiles.log"
 
-home_files="${SCRIPTS}/backup/home-files.txt"
-root_files="${SCRIPTS}/backup/root-files.txt"
-misc_files="${SCRIPTS}/backup/misc-files.txt"
+dotfiles="${SCRIPTS}/backup/dotfiles.txt"
+miscfiles="${SCRIPTS}/backup/miscfiles.txt"
 
 DOTFILES_OPT="dotfiles"
 MISCFILES_OPT="miscfiles"
@@ -52,7 +51,7 @@ backup_dotfiles()
 
    local _dotfiles_dir="${_backup_dir}/home"
    create_dir "${_dotfiles_dir}"
-   copy_files "${home_files}" "${_dotfiles_dir}" "${log_dotfiles}"
+   copy_files "${dotfiles}" "${_dotfiles_dir}" "${log_dotfiles}"
 
    local _rootfiles_dir="${_backup_dir}/root"
    create_dir "${rootfiles_dir}"
@@ -78,7 +77,7 @@ backup_miscfiles()
    #local backup_dir="$1_$(date '+%Y_%m_%d')"
    local _backup_dir="$1"
    create_dir "${_backup_dir}"
-   copy_files "${misc_files}" "${_backup_dir}" "${log_miscfiles}"
+   copy_files "${miscfiles}" "${_backup_dir}" "${log_miscfiles}"
 }
 
 create_dir(){ [[ ! -d "$1" ]] && mkdir -p "$1"; }

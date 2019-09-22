@@ -272,6 +272,7 @@
 " Disble session promping when closing window
    let g:session_autoload = 0
    let g:session_autosave = 'no'
+   let g:session_directory= '~/.local/share/nvim/sessions'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CtrlP for filetype

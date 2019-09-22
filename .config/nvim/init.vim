@@ -31,6 +31,7 @@
       Plug 'vim-scripts/SearchComplete'       " Tab completion inside search ('/')
       Plug 'godlygeek/tabular'                " Aligning text
       Plug 'yggdroot/indentline'              " Used for displaying thin vertical lines at each indentation level for code indented with spaces
+      Plug 'machakann/vim-highlightedyank'    " Highlight the yanked region
 
       " GIT plugins
       Plug 'airblade/vim-gitgutter'           " Shows git diffs in the gutter
@@ -109,6 +110,9 @@
    set splitbelow splitright
 
    set clipboard=unnamed
+
+" Live substitution
+   set inccommand=nosplit
 
 " Folding method
    "set foldmethod=syntax

@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# Change wallpaper for HDMI and EDP monitors
+# Parmeters:
+#  - param1: H/E = change wallpaper for HDMI/EDP
+#  - param2: path to image
+
+isHDMI="$(xrandr --listactivemonitors | grep -o 'HDMI' | head -n 1)"
+isEDP="$(xrandr --listactivemonitors | grep -o 'eDP' | head -n 1)"
+HDMIwall="${HOME}/.config/i3/wallpaper/hdmi.png"
+EDPwall="${HOME}/.config/i3/wallpaper/edp.png"
+
+if [[ "${isHDMI}" ]] && [[ "${isEDP}" ]]; then
+   if [[ "$1" = "H" ]]; then
+      cp "$2" "${HDMIwall}" && feh --bg-scale "${HDMIwall}" --bg-scale "${EDPwall}"
+   elif [[ "$1" = "E" ]]; then
+      cp "$2" "${EDPwall}" && feh --bg-scale "${HDMIwall}" --bg-scale "${EDPwall}"
+   fi
+elif [[ "${isHDMI}" ]] && [[ "$1" = H ]]; then
+   cp "$2" "${HDMIwall}" && feh --bg-scale "${HDMIwall}"
+elif [[ "${isEDP}" ]] && [[ "$1" = E ]]; then
+   cp "$2" "${EDPwall}" && feh --bg-scale ${EDPwall}
+fi
+

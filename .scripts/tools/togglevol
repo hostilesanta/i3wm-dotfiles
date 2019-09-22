@@ -1,0 +1,51 @@
+#!/bin/bash
+#
+# Toggle volume intensity and notify the user
+# Parameters:
+#  - param1: [1-100] - intensity step
+#  - param2: +/-/m   - increase/decrease/mute volume
+#
+
+# Arbitrary but unique message id
+msgid="991049"
+volmute="${HOME}/.icons/Faba-Mono/48x48/notifications/notification-audio-volume-muted.svg"
+voloff="${HOME}/.icons/Faba-Mono/48x48/notifications/notification-audio-volume-off.svg"
+vollow="${HOME}/.icons/Faba-Mono/48x48/notifications/notification-audio-volume-low.svg"
+volmed="${HOME}/.icons/Faba-Mono/48x48/notifications/notification-audio-volume-medium.svg"
+volhigh="${HOME}/.icons/Faba-Mono/48x48/notifications/notification-audio-volume-high.svg"
+
+main()
+{
+   if [[ "$(echo "$1" | grep -E '^\-?[0-9]+$')" ]] && (( $1 < 100 )) && [[ "$2" =~ ^[+-]{1}$|^m{1}$ ]]; then
+      amixer -D pulse set Master $1%"$2" > /dev/null
+      notify_vol
+   elif [[ "$1" = "m" ]]; then
+      amixer -D pulse set Master toggle > /dev/null
+      vol="$(pulsemixer --get-mute | awk '{print $1}')"
+      if [[ ${vol} -eq 1 ]]; then
+         dunstify "Volume is mute" -i "${volmute}" -r "${msgid}"
+      else
+         notify_vol
+      fi
+   else
+      echo "Wrong arguments.Choose a value from 1 to 100 and +/-/m to increase/decrease/mute volume."
+   fi
+}
+
+notify_vol()
+{
+   vol="$(pulsemixer --get-volume | awk '{print $1}')"
+   if [[ "${vol}" -lt "10"  ]]; then
+      dunstify "Volume ${vol}%" -i "${voloff}" -r "${msgid}"
+   elif [[ "${vol}" -lt "30" ]]; then
+      dunstify "Volume ${vol}%" -i "${vollow}" -r "${msgid}"
+   elif [[ "${vol}" -lt "70" ]]; then
+      dunstify "Volume ${vol}%" -i "${volmed}" -r "${msgid}"
+   else
+      dunstify "Volume ${vol}%" -i "${volhigh}" -r "${msgid}"
+   fi
+}
+
+#----------------------------------------------------------------------------------------------------
+
+main "$@"

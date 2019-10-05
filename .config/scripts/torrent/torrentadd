@@ -1,6 +1,11 @@
 #!/bin/bash
 #
-# Add torrent to transmission-daemon
+# Add torrent to transmission-daemon automatically when
+# torrent file is downloaded using magnet link.
+# Requires a default torrent client to be configured in mimeapps.list
+# Ex:
+# x-scheme-handler/magnet=transmission.desktop;
+# application/x-bittorrent=transmission.desktop;
 #
 
 proc_trans_da=$(pgrep -x transmission-da)

@@ -363,3 +363,6 @@
 
 " Reindent the entire file
    nnoremap <C-S-F> gg=G<CR>
+
+" Close current buffer
+   nnoremap <leader>q :bp<cr>:bd #<cr>

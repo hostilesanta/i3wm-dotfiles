@@ -20,13 +20,18 @@ export FILE="vifm"
 export TERMINAL="st"
 
 export CONFIG="${HOME}/.config"
+export NVIMRC="${CONFIG}/nvim/init.vim"
 export GTK2_RC_FILES="${CONFIG}/gtk-2.0/gtkrc-2.0"
 export SCRIPTS="${CONFIG}/scripts"
 export BIN="${HOME}/.local/bin"
 export SUDO_ASKPASS="${SCRIPTS}/rofi/rofiaskpass"
+export MOUNTDIR="${HOME}/Mount"
 export DEV="${HOME}/Development"
-#export JAVA_HOME="${DEV}/Libraries/jdk/jdk1.8.0_121"
+#export JAVA_HOME="${DEV}/libraries/jdk/jdk1.8.0_121"
 export MAVEN_HOME="${DEV}/tools/apache-maven"
+export NODE_HOME="${DEV}/libraries/nodejs"
+export NODE_MODULES_HOME="${DEV}/libraries/nodejs/node_modules"
+
 
 export BACKUP_DOTFILES="${HOME}/Utilities/linux/dotfiles"
 
@@ -45,7 +50,7 @@ export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
 export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
-export PATH=${PATH}:${MAVEN_HOME}/bin:${BIN}
+export PATH=${PATH}:${MAVEN_HOME}/bin:${BIN}:${NODE_HOME}/bin:${NODE_MODULES_HOME}/.bin
 
 # if running bash
 if [ -n "${BASH_VERSION}" ]; then

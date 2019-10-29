@@ -1,6 +1,0 @@
-#!/bin/bash
-#
-# Rofi run programs menu
-#
-
-rofi -show drun

@@ -1,6 +1,0 @@
-#!/bin/bash
-#
-# Rofi show active windows
-#
-
-rofi -show window

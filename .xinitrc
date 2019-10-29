@@ -15,6 +15,6 @@ xfce4-power-manager &                     # Manjaro only
 
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
-"${SCRIPTS}"/display/setdisplay T        # start HDMI if connected else EDP display
+"${SCRIPTS}"/display/setdisplay --toggle  # start HDMI if connected else EDP display
 
 exec i3

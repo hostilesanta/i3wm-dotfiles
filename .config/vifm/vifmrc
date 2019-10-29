@@ -500,10 +500,8 @@
    nnoremap te :!trash-empty <cr>
 
 " Handle backgrounds images
-   nnoremap bh :!changewall H %f<cr>
-   nnoremap bd :!changewall E %f<cr>
-   nnoremap bhh :!changewall H %f<cr>
-   nnoremap bdd :!changewall E %f<cr>
+   nnoremap bh :!changewall --hdmi %f<cr>
+   nnoremap bd :!changewall --edp %f<cr>
 
 " Extract archive locally
    nnoremap xx :!aunpack %f &>/dev/null <cr>

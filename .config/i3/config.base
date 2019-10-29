@@ -139,9 +139,9 @@ bindsym $mod+plus                   border normal
 bindsym $mod+Shift+plus             border pixel 1
 
 # Enter fullscreen mode for the focused container
-bindsym $mod+f                      fullscreen toggle
+bindsym $mod+Shift+f                fullscreen toggle
 # Floating toggle if window is floating
-bindsym $mod+Shift+f                floating toggle move position center
+bindsym $mod+f                      floating toggle move position center
 
 # Change focus between tiling / floating windows
 bindsym $mod+space                  focus mode_toggle
@@ -195,10 +195,10 @@ mode "resize" {
 }
 
 ## Move floating window top/bottom left/right
-bindsym $mod+F3                     floating toggle; sticky toggle; exec --no-startup-id bottomleft
-bindsym $mod+Shift+F3               floating toggle; sticky toggle; exec --no-startup-id bottomright
-bindsym $mod+F4                     floating toggle; sticky toggle; exec --no-startup-id topleft
-bindsym $mod+Shift+F4               floating toggle; sticky toggle; exec --no-startup-id topright
+bindsym $mod+F3                     floating toggle; sticky toggle; exec --no-startup-id movewindow --bottomleft
+bindsym $mod+Shift+F3               floating toggle; sticky toggle; exec --no-startup-id movewindow --bottomright
+bindsym $mod+F4                     floating toggle; sticky toggle; exec --no-startup-id movewindow --topleft
+bindsym $mod+Shift+F4               floating toggle; sticky toggle; exec --no-startup-id movewindow --topright
 
 ## WORKSPACES
 # Switch/Move to workspace

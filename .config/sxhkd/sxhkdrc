@@ -6,31 +6,31 @@ super + b
 
 # Rofi keys
 super + d
-		rofidrun
+		rofishow --applications
 super + shift + d
 		rofidisplay
 super + shift + Return
 		rofipower
 super + shift + Tab
-		rofiwindow
+		rofishow --window
 super + shift + s
-		rofissh
+		rofishow --ssh
 super + grave
-		roficlip
+		rofishow --clipboard
 super + m
 		rofimenu
 super + c
-		roficalc
+		rofishow --calculator
 super + u
 		rofisurf
 
 # Function keys
 # HDMI/EDP
 super + {F1,shift+F1}
-		setdisplay {H,E}
+		setdisplay {--hdmi only,--edp only}
 # HDMI + EDP-right/left
 super + {F2,shift+F2}
-		setdisplay {HER,HEL}
+		setdisplay {--edp right,--edp left}
 # F3 - F4 defined in i3 config file
 # super + F3 			sticky bottom left window
 # super + Shift + F3 sticky bottom right window
@@ -41,15 +41,15 @@ super + {F10,shift+F10}
 		{rofimount,rofiumount}
 # Enable/disable transmission-daemon
 super + {F11,shift+F11}
-		transmission {start,stop}
+		transmission {--start,--stop}
 # Enable/disable nvidia composition pipeline (Disable screen tearing)
 super + {F12,shift+F12}
-		togglecompositor {on,off}
+		togglecompositor {--on,--off}
 
 Print
-		screenshot -e
+		screenshot --all
 shift + Print
-		screenshot -ue
+		screenshot --window
 
 # Multimedia keys
 XF86AudioRaiseVolume

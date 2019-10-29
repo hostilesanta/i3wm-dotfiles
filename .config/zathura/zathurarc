@@ -12,3 +12,6 @@ map J zoom out
 map i recolor
 map p print
 
+#set recolor true
+#set recolor_darkcolor #222222
+#set recolor_lightcolor #000000

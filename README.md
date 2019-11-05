@@ -40,7 +40,7 @@ i3-wm dotfiles used in Manjaro Linux distribution.
 
 >> <b>rofi</b> - configuration used by [rofi](https://github.com/davatorium/rofi)
 
->> <del><b>scripts</b> - scripts used in i3 workflow. Check [scripts](.config/scripts/README.md) for more details</del> Moved to [i3wm-scripts repo](https://github.com/hostilesanta/i3wm-scripts.git)
+>> <b>scripts</b> - scripts used in i3 workflow. Check [scripts](.config/scripts/README.md) for more details
 
 >> <b>sxhkd</b> - global keyboard and mouse shortcuts, [sxhkd](https://github.com/baskerville/sxhkd) is required to be installed
 

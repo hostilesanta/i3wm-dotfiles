@@ -1,0 +1,71 @@
+#!/bin/bash
+#
+# Change wallpaper on native and external monitors
+#
+
+declare -r HDMI="$(xrandr --listactivemonitors | grep 'HDMI' | awk '{ print $4 }')"
+declare -r EDP="$(xrandr --listactivemonitors | grep 'eDP' | awk '{ print $4 }')"
+declare -r HDMI_WALL="${HOME}/.config/i3/wallpaper/hdmi.png"
+declare -r EDP_WALL="${HOME}/.config/i3/wallpaper/edp.png"
+
+main()
+{
+   if [[ $# == 0 ]]; then
+      throwerror "$0"
+      exit 1
+   fi
+
+   parseparams "h" "help,hdmi:,edp:"
+   while true; do
+      case "$1" in
+         -h|--help)
+            show_help
+            exit 0
+            ;;
+         --hdmi)
+            [[ "$2" ]] && cp "$2" "${HDMI_WALL}"
+            change_wall
+            shift 2
+            exit 0
+            ;;
+         --edp)
+            [[ "$2" ]] && cp "$2" "${EDP_WALL}"
+            change_wall
+            shift 2
+            exit 0
+            ;;
+         *)
+            throwerror "$0" "$1"
+            exit 1
+            ;;
+      esac
+   done
+}
+
+change_wall()
+{
+   xwallpaper --output "${HDMI}" \
+              --center "${HDMI_WALL}" \
+              --output "${EDP}" \
+              --center "${EDP_WALL}"
+}
+
+show_help()
+{
+cat <<-END
+Usage: $(basename $0) <cmd> /path/to/image
+
+Change wallpaper on native and external monitors.
+The image will be copied into ${HOME}/.config/i3/wallpaper/hdmi.png or ${HOME}/.config/i3/wallpaper/edp.png.
+Options:
+      --hdmi /path/to/img = change wallpaper on external display connected through HDMI port.
+      --hdmi              = use hdmi.png wallpaper on external display.
+      --edp  /path/to/img = change wallpaper on native display.
+      --edp               = use edp.png wallpaper image on native display.
+   -h --help              = show help
+END
+}
+
+#----------------------------------------------------------------------------------------------
+
+main "$@"

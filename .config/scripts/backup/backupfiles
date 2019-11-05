@@ -1,0 +1,146 @@
+#!/bin/bash
+#
+# How to use:
+# backupfiles dotfiles        = backup dotfiles to $BACKUP_DOTFILES(check .profile)
+# backupfiles dotfiles /path  = backup dotfiles to specified path
+# backupfiles miscfiles /path = backup miscfiles to specified path
+#
+# Check dotfiles.txt, miscfiles.txt for the files you want to backup.
+# If backup directory doesn't exists, a new one will be created,
+# otherwise all existing file from backup location  will be overridden.
+#
+
+declare -r COMPRESS_TYPES="gz/bz2/jpg/jpeg/ogg/mp[34]/mov/avi/rpm/deb/zip/"
+
+declare -r LOG_DOTFILES="${HOME}/.backup_dotfiles.log"
+declare -r LOG_MISCFILES="${HOME}/.backup_miscfiles.log"
+
+declare -r DOTFILES="${SCRIPTS}/backup/dotfiles.txt"
+declare -r MISCFILES="${SCRIPTS}/backup/miscfiles.txt"
+
+declare -r DOTFILES_OPT="dotfiles"
+declare -r MISCFILES_OPT="miscfiles"
+
+main()
+{
+   if [[ $# == 0 ]]; then
+      throwerror $0
+      exit 1
+   fi
+
+   dunstify "Files backup started !!!"
+
+   parseparams "hd:m:" "help,dotfiles:,miscfiles:"
+
+   while true; do
+      case "$1" in
+         -h|--help)
+            show_help
+            exit 0
+            ;;
+         -d|--dotfiles)
+            [[ "$2" ]] && backup_dotfiles "$2" || backup_dotfiles "${BACKUP_DOTFILES}"
+            break
+            ;;
+         -m|--miscfiles)
+            [[ "$2" ]] && backup_miscfiles "$2" || echo "Please provide the path to backup location"
+            break
+            ;;
+         *)
+            throwerror "$0" "$1"
+            dunstify --urgency=CRITICAL "Files backup failed !!!"
+            exit 1
+            ;;
+      esac
+   done
+
+   dunstify "Files backup finished !!!"
+}
+
+backup_dotfiles()
+{
+   remove_file "${LOG_DOTFILES}"
+
+   local backup_dir="$1_$(date '+%Y_%m_%d')"
+
+   local dotfiles_dir="${backup_dir}/home"
+   create_dir "${dotfiles_dir}"
+   copy_files "${DOTFILES}" "${dotfiles_dir}" "${LOG_DOTFILES}"
+
+   # list all pacman official repo installed pkg and print them to file
+   pacman -Qqe | grep -v "$(pacman -Qqm)" > "${backup_dir}/pacman.txt"
+   # list all AUR repo installed pkg and print them to file
+   pacman -Qqm > "${backup_dir}/aur.txt"
+
+   # install all pckg from file (PACMAN)
+   # cat pacman.txt | xargs pacman -S --needed --noconfirm
+
+   # install all pckg from file (AUR)
+   # cat aur.txt | xargs yay -S --needed --noconfirm
+
+   create_archive "${backup_dir}"
+}
+
+backup_miscfiles()
+{
+   remove_file "${LOG_MISCFILES}"
+   local backup_dir="$1_$(date '+%Y_%m_%d')"
+   #local backup_dir="$1"
+   create_dir "${backup_dir}"
+   copy_files "${MISCFILES}" "${backup_dir}" "${LOG_MISCFILES}"
+   create_archive "${backup_dir}"
+}
+
+create_dir(){ [[ ! -d "$1" ]] && mkdir -p "$1"; }
+
+remove_file(){ [[ -f "$1" ]] &&  rm "$1"; }
+
+copy_files()
+{
+   while read -r line; do
+      [[ "$(echo "${line}" | grep "^#")" ]] && continue
+      exe_rsync "${HOME}/./${line}" "$2" "$3"
+   done < "$1"
+}
+
+exe_rsync()
+{
+   rsync --verbose \
+         --archive \
+         --compress \
+         --human-readable \
+         --relative \
+         --progress \
+         --info=ALL \
+         --skip-compress="${COMPRESS_TYPES}" \
+         --log-file="$3" \
+         "$1" "$2"
+}
+
+create_archive()
+{
+   cd "$1"
+   tar --create \
+       --verbose \
+       --gzip \
+       --file "$1".tar.gz ./*
+}
+
+show_help()
+{
+cat << END
+Usage: $(basename $0) <cmd> <arg>
+
+Check dotfiles.txt, miscfiles.txt for the files you want to backup.
+If backup directory doesn't exists, a new one will be created,otherwise all existing file from backup location  will be overridden.
+
+Options:
+   -d --dotfiles /path/to/backup  = backup dotfiles(Check dotfiles.txt). If path is omited $BACKUP_DOTFILES is considered.
+   -m --miscfiles /path/to/backup = backup misc files(Check miscfiles.txt)
+   -h --help                      = show help
+END
+}
+
+# ---------------------------------------------------------------------------------
+
+main "$@"

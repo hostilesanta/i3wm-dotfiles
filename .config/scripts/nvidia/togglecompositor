@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+# Disable screen tearing by enabling ForceFullCompositionPipeline
+#
+
+declare -r REFRESH_RATE=144
+declare -r DISP="$(xrandr | grep HDMI | awk '{print $1}')"
+declare -r RESOLUTION="$(xrandr | awk '/HDMI/ {getline; print $1}')"
+declare -r POSITION="$(xrandr | grep HDMI | awk '{print $4}' | sed 's/\w*x\w*//g')"
+
+main()
+{
+   if [[ $# == 0 ]]; then
+      throwerror "$0"
+      exit 1
+   fi
+
+   parseparams "h" "help,on,off"
+   while true; do
+      case "$1" in
+         -h|--help)
+            show_help
+            exit 0;
+            ;;
+         --on|--off)
+            local mode="$(echo $1 | sed s/--//g)"
+            nvidia-settings --assign CurrentMetaMode="${DISP}:${RESOLUTION}_${REFRESH_RATE} ${POSITION} { ForceFullCompositionPipeline = ${mode} }"
+            exit 0;
+            ;;
+         *)
+            throwerror "$0" "$1"
+            exit 1
+            ;;
+      esac
+   done
+}
+
+show_help()
+{
+cat <<-END
+Usage $(basename $0) <cmd>
+
+Disable screen tearing by enabling ForceFullCompositionPipeline
+
+Options:
+   --on  = enable compositor
+   --off = disable compositor
+END
+}
+
+#--------------------------------------------------------------------------------------
+
+main "$@"

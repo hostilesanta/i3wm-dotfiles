@@ -1,0 +1,81 @@
+#!/bin/bash
+#
+# Rofi prompt dialog tool.
+#
+
+declare -r SEPARATOR=","
+
+main()
+{
+   local count_sep=0
+   local text_arg
+   local sep_arg
+   local opt_arg
+
+   if [[ $# == 0 ]]; then
+      throwerror "$0"
+      exit 1
+   fi
+
+   parseparams "ht:s:o:" "help,text:,separator:,options:"
+   while true; do
+      case "$1" in
+         -h|--help)
+            show_help
+            exit 0
+            ;;
+         -t|--text)
+            text_arg="$2"
+            shift 2
+            ;;
+         -s|--separator)
+            sep_arg="$2"
+            count_sep=1;
+            shift 2
+            ;;
+         -o|--options)
+            opt_arg="$2"
+            shift 2
+            ;;
+         *)
+            break
+            ;;
+      esac
+   done
+
+   # By default use ',' separator if missing
+   if (( $count_sep <= 0 )); then
+      sep_arg="${SEPARATOR}"
+   fi
+
+   echo -e "${opt_arg}" | \
+   rofi -no-fixed-num-lines \
+        -xoffset 0 \
+        -yoffset -100 \
+        -dmenu \
+        -i \
+        -p "${text_arg}" \
+        -sep "${sep_arg}" | tr -d '\r\n'
+}
+
+show_help()
+{
+cat <<-END
+Usage: $(basename $0) <text> <separator> <options>
+
+Rofi prompt dialog tool.
+Insert parameters separated by ','(default mode).
+Specify the separator if you don't want the default one.
+Return the chosen param.
+
+Options:
+   -h --help      = show help
+   -t --text      = prompt text input
+   -s --separator = separator used for options, this is optional and if missing, the default one is ','
+   -o --options   = choices rendered to user for selection
+END
+}
+
+#-------------------------------------------------------------------
+
+main "$@"

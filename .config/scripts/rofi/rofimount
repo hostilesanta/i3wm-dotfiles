@@ -1,0 +1,154 @@
+#!/bin/bash
+#
+# Rofi menu for mounting devices like USB, ssd/hdd, MTP, google drive.
+# Check $MOUNTDIR path in .profile file.
+#
+# Dependencies: AUR: simple-mtpfs for mounting android devices
+#                    google-drive-ocamlfuse for google drive
+
+declare -r MTP_DEV=$(simple-mtpfs -l 2>/dev/null)
+declare -r INTERNAL_DEV="$(lsblk -rpo "name,type,size,label,mountpoint" | awk '$1 ~ "sda" && $2 == "part" && $5 == "" {printf "%s\t%s\t%s\n", $1,$3,$4}')"
+declare -r USB_DEV="$(lsblk -rpo "name,type,size,mountpoint" | awk '$1 !~ "nvm|sda" && $2 == "part" && $4 == "" {printf "%s\t%s\t%s\n", $1,$3,$4}')"
+declare -t GDRIVE="$(mount | grep 'google-drive-ocamlfuse' | awk '{print $3}')"
+
+main()
+{
+   [[ ! -d "${MOUNTDIR}" ]] && mkdir -p "${MOUNTDIR}"
+
+   if [[ -z "${USB_DEV}" && -z "${MTP_DEV}" && -z "${INTERNAL_DEV}" && -n ${GDRIVE} ]]; then
+      echo "No device detected"
+      dunstify --urgency=critical "No connected devices !"
+      exit 1
+   else
+      echo "Device(s) detected"
+      choose_type
+   fi
+}
+
+get_mount_point()
+{
+   local mountpoint="$(rofiprompt --text "Type mount point in \"${MOUNTDIR}\"" \
+                                  --options "$(ls ${MOUNTDIR} | awk '{print $1}')" \
+                                  --separator "\n" )"
+   if [[ -z "${mountpoint}" ]]; then
+      dunstify --urgency=critical "Mount failed !" "You need to create a mount point in order to mount the device."
+      exit 1
+   elif [[ -d "${MOUNTDIR}/${mountpoint}" ]]; then
+      get_mount_point
+   fi
+
+   if [[ ! -d "${MOUNTDIR}/${mountpoint}" ]]; then
+      local yesno="$(rofiprompt --text "\"${mountpoint}\" does not exists. Create it ?" \
+                                 --options "Yes,No")"
+      if [[ "${yesno}" = "Yes" ]]; then
+         mkdir -p "${MOUNTDIR}/${mountpoint}"
+         echo "${MOUNTDIR}/${mountpoint}"
+      else
+         dunstify --urgency=critical "Mount failed !" "You need to create a mount point in order to mount the device."
+         exit 1
+      fi
+   fi
+}
+
+mount_device()
+{
+   local device="$(rofiprompt --text "Choose device to mount" \
+                              --separator "\n" \
+                              --options "$1" | awk '{print $1}')"
+   [[ -z "${device}" ]] && exit 1
+
+   local mountpoint="$(get_mount_point)"
+   [[ -z "${mountpoint}" ]] && exit 1
+
+   sudo -A mount "${device}" "${mountpoint}"
+   if [[ "$?" -ne 0 ]]; then
+      dunstify --urgency=critical "Mount failed !" "Password must be entered."
+      rmdir "${mountpoint}"
+      exit 1
+   fi
+
+   local devmountpoint="$(lsblk -rpo "mountpoint" "${device}" | awk 'FNR == 2 {print $1}')"
+   if [[ -z "${devmountpoint}" ]]; then
+      dunstify --urgency=critical "Mount failed !" "$(printf "Failed to mount ${device} to\n${mountpoint}.")"
+      rmdir "${mountpoint}"
+      exit 1
+   else
+      dunstify "Device mounted !" "$(printf "${device} mounted to\n${mountpoint}.")"
+   fi
+}
+
+mount_mtp()
+{
+   local chosendevice="$(rofiprompt --text "Choose device to mount" \
+                                    --separator "\n" \
+                                    --options "${MTP_DEV}")"
+   [[ -z "${chosendevice}" ]] && exit 1
+
+   local mountpoint="$(get_mount_point)"
+   [[ -z "${mountpoint}" ]] && exit 1
+
+   local device="$(echo "${chosendevice}" | cut -d : -f 1)"
+   simple-mtpfs --device "${device}" "${mountpoint}"
+
+   local mtpmount="$(grep simple-mtpfs /etc/mtab)"
+   if [[ -z "${mtpmount}" ]]; then
+      local devicedesc="$(echo "${chosendevice}" | cut -d : -f 2 | sed -e 's/^[[:space:]]*//')"
+      dunstify --urgency=critical "Mount failed !" "$(printf "Failed to mount ${devicedesc} to\n${mountpoint}.")"
+      rmdir "${mountpoint}"
+      exit 1
+   else
+      dunstify "Device mounted !" "$(printf "${devicedesc} mounted to\n${mountpoint}.")"
+   fi
+}
+
+mount_gdrive()
+{
+   if [[ ! -d "${CONFIG}/gdfuse" ]];then
+      local yesno="$(rofiprompt --text "${CONFIG}/gdfuse doesn't exit.Create it ?" \
+                                --options "Yes,No")"
+      if [[ "${yesno}" = "Yes" ]]; then
+         google-drive-ocamlfuse -xdgbd
+         echo "${CONFIG}/gdfuse"
+      else
+         dunstify --urgency=critical "Google drive configuration failed !" "You need to load google drive configuration in order to mount it."
+         exit 1
+      fi
+   fi
+
+   local mountpoint="$(get_mount_point)"
+   [[ -z "${mountpoint}" ]] && exit 1
+
+   google-drive-ocamlfuse "${mountpoint}"
+
+   dunstify "Device mounted !" "$(printf "${devicedesc} mounted to\n${mountpoint}.")"
+}
+
+choose_type()
+{
+   local devices=""
+   [[ -n "${USB_DEV}" ]] && devices="${devices}USB,"
+   [[ -n "${INTERNAL_DEV}" ]] && devices="${devices}SSD/HDD,"
+   [[ -n "${MTP_DEV}" ]] && devices="${devices}MTP,"
+   [[ -z "${GDRIVE}" ]] && devices="${devices}GDRIVE"
+
+   local type="$(rofiprompt --text "Choose what to mount" \
+                            --options "$(echo ${devices} | sed 's/,$//g')")"
+   case "${type}" in
+      "USB")
+         mount_device "${USB_DEV}"
+         ;;
+      "SSD/HDD")
+         mount_device "${INTERNAL_DEV}"
+         ;;
+      "MTP")
+         mount_mtp
+         ;;
+      "GDRIVE")
+         mount_gdrive
+         ;;
+   esac
+}
+
+#------------------------------------------------------------------------------
+
+main "$@"

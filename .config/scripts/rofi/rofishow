@@ -1,0 +1,77 @@
+#!/bin/bash
+#
+# Show different rofi features
+#
+
+main()
+{
+   if [[ $# == 0 ]]; then
+      throwerror "$0"
+      exit 1
+   fi
+
+   parseparams "hpclasw" "help,password,calculator,clipboard,applications,ssh,window"
+   while true; do
+      case "$1" in
+         -h|--help)
+            show_help
+            exit 0;
+            ;;
+         -p|--password)
+            rofiaskpass
+            exit 0;
+            ;;
+         -c|--calculator)
+            rofi -show calc \
+                 -modi calc \
+                 -no-show-match \
+                 -no-sort
+            exit 0;
+            ;;
+         -l|--clipboard)
+            rofi -modi "clipboard:greenclip print" \
+                 -show clipboard \
+                 -run-command '{cmd}'
+            exit 0;
+            ;;
+         -a|--applications)
+            rofi -show drun
+            exit 0;
+            ;;
+         -s|--ssh)
+            rofi -show ssh
+            exit 0;
+            ;;
+         -w|--window)
+            rofi -show window
+            exit 0;
+            ;;
+         *)
+            throwerror "$0" "$1"
+            exit 1
+            ;;
+      esac
+   done
+}
+
+show_help()
+{
+cat <<-END
+Usage: $(basename $0) <cmd>
+
+Show different rofi features.
+
+Options:
+   -h --help         = show help
+   -p --password     = show ask password window
+   -c --calculator   = show calculator window
+   -l --clipboard    = show clipboard window
+   -a --applications = show applications menu
+   -s --ssh          = show active ssh windows
+   -w --window       = show active windows
+END
+}
+
+#----------------------------------------------------------------------------------
+
+main "$@"

@@ -1,0 +1,9 @@
+# Add into 'cronjobs' file your path to script then execute 'crontab path/to/cronjobs'
+#
+# mm hh DD MM W /path/to/script ( W = weekday: 0-6 [Sun=0] )
+
+# For testing: run every minute:
+#* * * * * /home/teddy/.config/scripts/cronjobs/newsboatupdate
+
+# Run every 3 hours:
+0 */3 * * * /home/teddy/.config/scripts/cronjobs/newsboatupdate

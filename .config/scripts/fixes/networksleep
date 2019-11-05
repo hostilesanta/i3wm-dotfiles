@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# Known bug: No Ethernet Network Connection after Resume from sleep mode.
+# It seems this is happening on kernel v4.17 - 4.19 so far.
+# As a workaround create a symlink to this script in /lib/systemd/system-sleep.
+# How it works:
+#  -> Before sleep execute:
+#     - stop network manager
+#     - stop wired network interface
+#     - unmount network driver
+#  -> After resume from sleep:
+#     - mount network driver
+#     - start wired network
+#     - start network manager
+#
+
+case $1/$2 in
+  pre/*)
+    echo "Going to $2..."
+    /home/teddy/.config/scripts/tools/togglenet --off
+    ;;
+  post/*)
+    echo "Waking up from $2..."
+    /home/teddy/.config/scripts/tools/togglenet --on
+    ;;
+esac

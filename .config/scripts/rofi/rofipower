@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+# Rofi power management menu
+#
+
+declare -r REBOOT="Reboot"
+declare -r SHUTDOWN="Shutdown"
+declare -r SUSPEND="Suspend"
+declare -r LOCK="Lock"
+declare -r LOGOUT="Log Out"
+
+declare -r LOCKER=betterlockscreen
+declare -r LOCKER_IMG="${HOME}/.config/i3/lockscreen"
+
+main()
+{
+   local options="${REBOOT},${SHUTDOWN},${SUSPEND},${LOCK},${LOGOUT}"
+   local launch="$(rofiprompt --text "Choose option" \
+                              --options "${options}")"
+
+   case "${launch}" in
+      "${REBOOT}")
+         systemctl reboot
+         ;;
+      "${SHUTDOWN}")
+         systemctl poweroff
+         ;;
+      "${SUSPEND}")
+         ${LOCKER} -s
+         ;;
+      "${LOCK}")
+         check_locker
+         ${LOCKER} -l
+         ;;
+      "${LOGOUT}")
+         i3-msg exit
+         ;;
+      *)
+         exit 1
+         ;;
+   esac
+}
+
+check_locker()
+{
+   if [[ ! -d "${HOME}/.cache/i3lock" ]]; then
+      ${LOCKER} -u "${LOCKER_IMG}"
+   fi
+}
+
+#--------------------------------------------------------------------
+
+main "$@"

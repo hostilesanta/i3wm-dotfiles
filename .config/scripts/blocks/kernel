@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+# Display the kernel
+#
+
+kernel=$(uname -r)
+
+if [[ -n "${kernel}" ]]; then
+  echo "${kernel}"
+fi
+

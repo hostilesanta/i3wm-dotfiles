@@ -1,0 +1,251 @@
+#!/bin/bash
+#
+# Enable the displays connected to your machine ports.
+# Currently only notebook and one external display connected through HDMI is supported.
+# Modes supported:
+# - HDMI
+# - HDMI + EDP(left or right)
+# - Auto enable all connected displays
+# - Toggle between connected displays
+# - Mirror displays
+# - Reset all displays to default state
+#
+# For NVIDIA cards enable/disable the compositor in order to prevent screen tearing on connected display
+# (check togglecompositor script)
+#
+# Start conky or polybar if installed.
+#
+
+declare -r USABLE_DISP="$(xrandr | grep 'HDMI\|eDP' | awk '{print $1}')"
+declare -r TOTAL_USABLE_DISP="$(xrandr | grep 'HDMI\|eDP' | awk '{print $1}' | wc -l)"
+
+declare -r HDMI="$(xrandr | grep HDMI | awk '{print $1}')"
+declare -r HDMI_RES="$(xrandr | awk '/HDMI/ {getline; print $1}')"
+declare -r HDMI_RATE=144
+
+declare -r EDP="$(xrandr | grep eDP | awk '{print $1}')"
+declare -r EDP_RES="$(xrandr | awk '/eDP/ {getline; print $1}')"
+declare -r EDP_RATE=60
+
+declare -r BG_DISP_HDMI="${HOME}/.config/i3/wallpaper/hdmi.png"
+declare -r BG_DISP_EDP="${HOME}/.config/i3/wallpaper/edp.png"
+
+declare -r CONKY_HDMI="${HOME}/.config/conky/.conky_hdmi"
+declare -r CONKY_HDMI_EDP_LEFT="${HOME}/.config/conky/.conky_hdmi_edp-left"
+declare -r CONKY_EDP="${HOME}/.config/conky/.conky_notebook"
+
+declare -r DELAY="2s"
+
+main()
+{
+   if [[ $# == 0 ]]; then
+      throwerror "$0"
+      exit 1
+   fi
+
+   parseparams "h", "help,hdmi:,edp:,all,auto,mirror,toggle"
+   while true; do
+      case "$1" in
+         -h|--help)
+            show_help
+            exit 0
+            ;;
+         --hdmi)
+            set_display "$1" "$2"
+            break
+            ;;
+         --edp)
+            set_display "$1" "$2"
+            break
+            ;;
+         --all)
+            enable_all_displays
+            break
+            ;;
+         --auto)
+            xrandr --auto
+            break
+            ;;
+         --mirror)
+            mirror_display
+            break
+            ;;
+         --toggle)
+            toggle_display
+            break
+            ;;
+         *)
+            throwerror "$0" "$1"
+            exit 1
+            ;;
+      esac
+   done
+   i3-msg restart
+}
+
+set_display()
+{
+   if [[ "$1" = "--hdmi" && "$2" = "only" ]]; then
+      set_hdmi
+   elif [[ "$1" = "--edp" ]]; then
+      case "$2" in
+         only)
+            set_edp
+            ;;
+         left|right)
+            set_display_pos "$2"
+            ;;
+         *)
+            exit 1
+            ;;
+      esac
+   fi
+}
+
+set_hdmi()
+{
+   [[ -z "${HDMI}" ]] && exit 1
+   togglecompositor --off
+   xrandr --output "${HDMI}" --primary --mode "${HDMI_RES}" --rate ${HDMI_RATE} \
+          --output "${EDP}" --off
+   togglecompositor --on
+   changewall --hdmi
+   killall conky
+   sleep "${DELAY}"
+   conky -c "${CONKY_HDMI}"
+}
+
+set_edp()
+{
+   [[ -z "${EDP}" ]] && exit 1
+   togglecompositor --off
+   xrandr --output "${EDP}" --primary --mode "${EDP_RES}" --rate ${EDP_RATE} \
+          --output "${HDMI}" --off
+   togglecompositor --on
+   changewall --edp
+   killall conky
+   sleep "${DELAY}"
+   conky -c "${CONKY_EDP}"
+}
+
+set_display_pos()
+{
+   [[ ${TOTAL_USABLE_DISP} -lt 2 ]] && exit 1
+
+   togglecompositor --off
+   killall conky
+
+   if [[ "$1" = "right" ]]; then
+      xrandr --output "${HDMI}" --primary --mode "${HDMI_RES}" --rate ${HDMI_RATE} \
+             --output "${EDP}" --mode "${EDP_RES}" --rate ${EDP_RATE} --right-of "${HDMI}"
+      sleep "${DELAY}"
+      conky -c "${CONKY_HDMI}"
+   elif [[ "$1" = "left" ]]; then
+      xrandr --output "${HDMI}" --primary --mode "${HDMI_RES}" --rate ${HDMI_RATE} \
+             --output "${EDP}" --mode "${EDP_RES}" --rate ${EDP_RATE} --left-of "${HDMI}"
+      sleep "${DELAY}"
+      conky -c "${CONKY_HDMI_EDP_LEFT}"
+   fi
+
+   togglecompositor --on
+   changewall --hdmi && changewall --edp
+}
+
+mirror_display()
+{
+   [[ ${TOTAL_USABLE_DISP} -lt 2 ]] && exit 1
+   togglecompositor --off
+   xrandr --output "${EDP}" --mode "${EDP_RES}" --fb "${EDP_RES}" \
+          --output "${HDMI}" --mode "${EDP_RES}" --same-as "${EDP}"
+   togglecompositor --on
+   changewall --edp
+   killall conky
+   sleep "${DELAY}"
+   conky -c "${CONKY_EDP}"
+}
+
+enable_all_displays()
+{
+   if [[ ${TOTAL_USABLE_DISP} = 2 ]]; then
+      set_display --edp right
+   else
+      toggle_display
+   fi
+}
+
+toggle_display()
+{
+   local hdmi_conn="$(xrandr | grep ${HDMI} | awk '{print $2}')"
+   local edp_conn="$(xrandr | grep ${EDP} | awk '{print $2}')"
+
+   if [[ "${hdmi_conn}" = "connected" ]]; then
+      set_hdmi
+   elif [[ "${edp_conn}" = "connected" ]]; then
+      set_edp
+   else
+      echo "Connected displays:"
+      echo "${USABLE_DISP}"
+      xrandr --auto
+   fi
+}
+
+start_polybar()
+{
+   killall -q polybar
+
+   # Wait until the processes have been shut down
+   while $(pgrep -u "${UID}" -x polybar >/dev/null); do
+      sleep 1;
+   done
+
+   # Launch polybar
+   if [[ "$1" = "--hdmi" ]]; then
+      polybar top-HDMI
+   elif [[ "$1" = "--edp" ]]; then
+      case "$2" in
+         only)
+            polybar top-EDP-p
+            ;;
+         left)
+            polybar top-HDMI & polybar top-EDP
+            ;;
+         right)
+            polybar top-HDMI & polybar top-EDP
+            ;;
+         *)
+            exit 1
+            ;;
+      esac
+   fi
+}
+
+show_help()
+{
+cat <<-END
+Usage: $(basename $0) <cmd> <arg>
+
+Enable the displays connected to your machine ports.
+Currently supported for 2 monitors: notebook and external display connected through HDMI port.
+For NVIDIA cards enable/disable the compositor in order to prevent screen tearing on connected display.
+Also start/restart conky or polybar if installed.
+
+Connected displays:
+${USABLE_DISP}
+
+Options:
+   -h --help            = show help
+      --hdmi <only>     = enable only external display connected through HDMI port"
+      --edp  <only>     = enable only native display(notebook display)"
+             <left>     = enable native display left of external display
+             <right>    = enable native display right of external display
+      --auto            = enable all connected displays and reset positions to default values
+      --all             = enable all connected displays
+      --mirror          = show displays in mirror mode
+      --toggle          = toggle between connected display and enable external or native if available
+END
+}
+
+# ----------------------------------------------------------------------------------
+
+main "$@"
+

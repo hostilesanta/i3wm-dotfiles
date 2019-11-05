@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+# Wrapper script for parsing command-line parameters using getopt.
+# Check getopt man for more info.
+# Options:
+#  - short options
+#  - long options
+#
+# Example:
+# parseparam "he1:e2:" "help,example1:,example2:
+# -h  --help
+# -e1 --example1
+# -e2 --example2
+# : = stands for a parameter which require an input, for ex: --example1 'some value'
+
+
+# Execute getopt on the arguments passed to this program, identified by the special character $@
+parsed_options=$(getopt --name "$0" \
+                        --options "$1" \
+                        --longoptions "$2" \
+                        -- "$@")
+
+#Bad arguments, something has gone wrong with the getopt command.
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+
+#The eval in eval set --$opts is required as arguments returned by getopt are quoted.
+eval set -- "${parsed_options}"
+
+# Now goes through all the options with a case and using shift to analyse 1 argument at a time.
+# $1 identifies the first argument, and when we use shift we discard the first argument, so $2 becomes $1 and goes again through the case

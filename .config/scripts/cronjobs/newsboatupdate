@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# Set as a cron job to check for new RSS entries for newsboat.
+#
+
+# In order to display the notification correctly:
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus;
+export DISPLAY=:0;
+
+main()
+{
+   local def_ip="$(ip r | grep -m 1 default | cut -d ' ' -f 3)"
+   local ping="$(ping -q -t 1 -c 1 "${def_ip}")"
+
+   if [[ "${ping}" ]]; then
+      #dunstify  "Updating RSS feeds..."
+      /usr/bin/newsboat -x reload
+      #dunstify "RSS feed update complete."
+   else
+      dunstify "RSS feed update failed !"
+      exit 1
+   fi
+}
+
+#------------------------------------------------------------------
+
+main "$@"

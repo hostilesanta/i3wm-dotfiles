@@ -1,0 +1,62 @@
+#!/bin/bash
+#
+# Toggle network connection on/off
+# Also mount/unmount network driver
+#
+
+declare -r WIRE="$(nmcli device status | grep ethernet | awk '{print $1}')"
+declare -r WIFI="$(nmcli device status | grep -m 1 wifi | awk '{print $1}')"
+declare -r DRIVER="r8168"
+
+main()
+{
+   if [[ $# == 0 ]]; then
+      throwerror "$0"
+      exit 1
+   fi
+
+   parseparams "h" "help,on,off"
+   while true; do
+      case "$1" in
+         -h|--help)
+            show_help
+            exit 0
+            ;;
+         --on)
+            modprobe "${DRIVER}"
+            ip link set "${WIRE}" up &
+            systemctl start NetworkManager
+            exit 0
+            ;;
+         --off)
+            systemctl stop NetworkManager &
+            ip link set "${WIRE}" down &
+            modprobe -r "${DRIVER}"
+            exit 0
+            ;;
+         *)
+            throwerror "$0" "$1"
+            exit 1
+            ;;
+      esac
+   done
+}
+
+show_help()
+{
+cat <<-END
+Usage: $(basename $0) <cmd>
+
+Toggle network connection on/off.
+Also mount/unmount network driver.
+
+Options:
+   --on      = switch off network connection
+   --off     = switch on network connection
+   -h --help = show help
+END
+}
+
+#----------------------------------------------------------------------
+
+main "$@"

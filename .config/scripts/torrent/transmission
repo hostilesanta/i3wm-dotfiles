@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+# Start/stop transmission daemon
+#
+
+main()
+{
+   if [[ $# == 0 ]]; then
+      throwerror "$0"
+      exit 1
+   fi
+
+   parseparams "h" "help,start,stop"
+   while true; do
+      case "$1" in
+         -h|--help)
+            show_help
+            exit 0
+            ;;
+         --start)
+            t_start
+            exit 0
+            ;;
+         --stop)
+            pkill transmission-da && dunstify "Stopping transmission daemon ..."
+            exit 0
+            ;;
+         *)
+            throwerror "$0" "$1"
+            exit 1
+            ;;
+      esac
+   done
+}
+
+t_start()
+{
+   proc_trans_da=$(pgrep -x transmission-da)
+   if [[ ! ${proc_trans_da} ]]; then
+      transmission-daemon
+      dunstify "Starting transmission daemon ..."
+   fi
+}
+
+show_help()
+{
+cat <<-END
+Usage: $(basename $0) <cmd>
+
+Start/stop transmission daemon.
+
+Options:
+   --start = start transmission daemon
+   --stop  = stop transmission daemon
+   --help  = show help
+END
+}
+
+#-----------------------------------------------------------------------------
+
+main "$@"

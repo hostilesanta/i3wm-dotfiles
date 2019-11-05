@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+# Menu for transmission daemon commands
+#
+
+main()
+{
+   local choice="$(rofiprompt --text "Choose an option" \
+                              --options "Start,Stop")"
+
+   if [[ "${choice}" = "Start" ]]; then
+      transmission --start
+   elif [[ "${choice}" = "Stop" ]]; then
+      transmission --stop
+   fi
+}
+
+#----------------------------------------------------------
+main "$@"

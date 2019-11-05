@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# Show an universal error message if a script is called with first argument invalid or missing
+#
+# Input:
+#  $1 = script that throws the error
+#  $2 = parameter given to the script that throws the error
+#
+
+main()
+{
+   if [[ $# -gt 1 ]]; then
+      echo -e "Unknown parameter: $2."
+      echo -e "Try $(basename $1) --help or -h for more information."
+   else
+      echo -e "Missing parameters."
+      echo -e "Try $(basename $1) --help or -h for more information."
+   fi
+}
+
+# -------------------------------------------------------------------------------------
+
+main "$@"

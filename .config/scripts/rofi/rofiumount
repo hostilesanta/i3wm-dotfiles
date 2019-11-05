@@ -1,0 +1,116 @@
+#!/bin/bash
+#
+# Rofi menu for unmounting devices.
+# $MOUNTRDIR must be the same as the one from rofimount script.
+#
+# Dependencies: fusermount for unmounting MTP devices
+#
+
+declare -r USB_DEV="$(lsblk -nrpo "name,type,size,mountpoint" | awk '$1 !~ "nvm|sda" && $2 == "part" && $4 != "" {printf "%s\t%s\t%s\n",$1,$3,$4}')"
+declare -r INTERNAL_DEV="$(lsblk -nrpo "name,type,size,label,mountpoint" | awk '$1 ~ "sda" && $2 == "part" && $5 != "" {printf "%s\t%s\t%s\t%s\n", $1,$3,$4,$5}')"
+declare -r MTP_DEV="$(grep simple-mtpfs /etc/mtab)"
+declare -t GDRIVE="$(mount | grep 'google-drive-ocamlfuse' | awk '{print $3}')"
+
+main()
+{
+   if [[ -z "${MTP_DEV}" && -z "${USB_DEV}" && -z "${INTERNAL_DEV}" && -z "${GDRIVE}" ]]; then
+      echo "No device detected"
+      dunstify --urgency=critical "No connected devices !" "There is no device to unmount."
+      exit 1
+   else
+      echo "Device(s) detected"
+      choose_type
+   fi
+}
+
+umount_device()
+{
+   local device="$(rofiprompt --text "Choose drive to unmount" \
+                              --separator "\n" \
+                              --options "$1" | awk '{print $1}')"
+   if [[ -z "${device}" ]]; then
+       dunstify --urgency=critical "Unmount failed !" "No drive selected for unmount."
+   else
+      local mountpoint="$(grep "${device}" /etc/mtab | awk '{print $2}')"
+
+      sudo -A umount "${device}"
+      if [[ "$?" -ne 0 ]]; then
+         dunstify --urgency=critical "Unmount failed !" "Password must be entered."
+         exit 1
+      fi
+
+      [[ -d "${mountpoint}" ]] && rmdir "${mountpoint}"
+      dunstify "Device unmounted !" "${device} unmounted."
+   fi
+}
+
+umount_mtp()
+{
+   local device="$(rofiprompt --text "Choose device to unmount" \
+                              --separator "\n" \
+                              --options "$(awk '/simple-mtpfs/ {print $2}' /etc/mtab)")"
+   if [[ -z "${device}" ]]; then
+      dunstify --urgency=critical "Unmount failed !" "No device selected for unmount."
+   else
+      local mountpoint="$(grep "${device}" /etc/mtab | awk '{print $2}')"
+
+      fusermount -u "${device}"
+      if [[ "$?" -ne 0 ]]; then
+         dunstify --urgency=critical "Unmount failed !" "Unable to unmount MTP device \"${device}\"."
+         exit 1
+      fi
+
+      [[ -d "${mountpoint}" ]] && rmdir "${mountpoint}"
+      dunstify "Device unmounted !" "${device} unmounted."
+   fi
+}
+
+umount_gdrive()
+{
+   local mountpoint="$(rofiprompt --text "Choose device to unmount" \
+                                  --separator "\n" \
+                                 --options "${GDRIVE}")"
+   if [[ -z "${mountpoint}" ]]; then
+      dunstify --urgency=critical "Unmount failed !" "No device selected for unmount."
+   else
+      fusermount -u "${mountpoint}"
+      if [[ "$?" -ne 0 ]]; then
+         dunstify --urgency=critical "Unmount failed !" "Unable to unmount Google drive \"${mountpoint}\"."
+         exit 1
+      fi
+
+      [[ -d "${mountpoint}" ]] && rmdir "${mountpoint}"
+      dunstify "Device unmounted !" "${mountpoint} unmounted."
+   fi
+}
+
+choose_type()
+{
+   local devices=""
+   [[ -n "${USB_DEV}" ]] && devices="${devices}USB,"
+   [[ -n "${INTERNAL_DEV}" ]] && devices="${devices}SSD/HDD,"
+   [[ -n "${MTP_DEV}" ]] && devices="${devices}MTP,"
+   [[ -n "${GDRIVE}" ]] && devices="${devices}GDRIVE"
+
+   local type="$(rofiprompt --text "Choose what you want to unmount" \
+                            --options "$(echo ${devices} | sed 's/,$//g')")"
+   case "${type}" in
+      "USB")
+         umount_device "${USB_DEV}"
+         ;;
+      "SSD/HDD")
+         umount_device "${INTERNAL_DEV}"
+         ;;
+      "MTP")
+         umount_mtp
+         ;;
+      "GDRIVE")
+         umount_gdrive
+         ;;
+   esac
+}
+
+#---------------------------------------------------------------------------------
+
+main "$@"
+

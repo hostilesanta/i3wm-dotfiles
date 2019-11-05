@@ -1,0 +1,76 @@
+#!/bin/bash
+#
+# Toggle volume intensity and notify the user
+#
+
+# Arbitrary but unique message id
+declare -r MSG_ID="991049"
+declare -r VOL_MUTE_IMG="${HOME}/.icons/Faba-Mono/48x48/notifications/notification-audio-volume-muted.svg"
+declare -r VOL_OFF_IMG="${HOME}/.icons/Faba-Mono/48x48/notifications/notification-audio-volume-off.svg"
+declare -r VOL_LOW_IMG="${HOME}/.icons/Faba-Mono/48x48/notifications/notification-audio-volume-low.svg"
+declare -r VOL_MED_IMG="${HOME}/.icons/Faba-Mono/48x48/notifications/notification-audio-volume-medium.svg"
+declare -r VOL_HIGH="${HOME}/.icons/Faba-Mono/48x48/notifications/notification-audio-volume-high.svg"
+
+main()
+{
+   local number_format="^\-?[0-9]+$"
+   local plus_minus_m_format="^[+-]{1}$|^m{1}$"
+
+   if [[ $# == 0 ]]; then
+      throwerror "$0"
+      exit 1
+   fi
+
+   if [[ "$(echo "$1" | grep -E "${number_format}")" ]] && (( $1 < 100 )) && [[ "$2" =~ ${plus_minus_m_format} ]]; then
+      amixer -D pulse set Master $1%"$2" > /dev/null
+      notify_vol
+   elif [[ "$1" = "m" ]]; then
+      amixer -D pulse set Master toggle > /dev/null
+
+      local vol="$(pulsemixer --get-mute | awk '{print $1}')"
+      if [[ ${vol} -eq 1 ]]; then
+         dunstify "Volume is mute" -i "${VOL_MUTE_IMG}" -r "${MSG_ID}"
+      else
+         notify_vol
+      fi
+   elif [[ "$1" = "-h" || "$1" = "--help" ]]; then
+      show_help
+   else
+      throwerror "$0" "$1"
+      exit 1
+   fi
+}
+
+notify_vol()
+{
+   local vol="$(pulsemixer --get-volume | awk '{print $1}')"
+   if [[ "${vol}" -lt "10"  ]]; then
+      dunstify "Volume ${vol}%" -i "${VOL_OFF_IMG}" -r "${MSG_ID}"
+   elif [[ "${vol}" -lt "30" ]]; then
+      dunstify "Volume ${vol}%" -i "${VOL_LOW_IMG}" -r "${MSG_ID}"
+   elif [[ "${vol}" -lt "70" ]]; then
+      dunstify "Volume ${vol}%" -i "${VOL_MED_IMG}" -r "${MSG_ID}"
+   else
+      dunstify "Volume ${vol}%" -i "${VOL_HIGH}" -r "${MSG_ID}"
+   fi
+}
+
+show_help()
+{
+cat <<-END
+Usage: $(basename $0) <step> <option>
+
+Toggle volume intensity and notify the user
+
+Options:
+ [1-100]   = intensity step
+ +         = increase volume
+ -         = decrease volume
+ m         = mute volume
+ -h --help = help
+END
+}
+
+#----------------------------------------------------------------------------------------------------
+
+main "$@"

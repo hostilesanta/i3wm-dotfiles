@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+# Rofi display settings menu
+#
+
+declare -r DISP1="EDP"
+declare -r DISP2="HDMI"
+declare -r DISP1_DISP2_R="HDMI + EDP-R"
+declare -r DISP1_DISP2_L="HDMI + EDP-L"
+declare -r MIRROR="Mirror Screens"
+declare -r AUTO="Auto Detect"
+declare -r RESET="Reset"
+
+main()
+{
+   local options="${DISP1},${DISP2},${DISP1_DISP2_R},${DISP1_DISP2_L},${MIRROR},${AUTO},${RESET}"
+   local launch="$(rofiprompt --text "Choose display" \
+                              --options "${options}")"
+
+   case "${launch}" in
+      "$DISP1")
+         setdisplay --edp only
+         ;;
+      "$DISP2")
+         setdisplay --hdmi only
+         ;;
+      "${DISP1_DISP2_R}")
+         setdisplay --edp right
+         ;;
+      "${DISP1_DISP2_L}")
+         setdisplay --edp left
+         ;;
+      "${MIRROR}")
+         setdisplay --mirror
+         ;;
+      "${AUTO}")
+         setdisplay --all
+         ;;
+      "${RESET}")
+         setdisplay --auto
+         ;;
+      *)
+         exit 1
+         ;;
+   esac
+}
+
+#-----------------------------------------------------------------------------
+
+main "$@"

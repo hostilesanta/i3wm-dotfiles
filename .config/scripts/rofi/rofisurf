@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# Search the desired info on the web
+#
+# Dependency: surf or chromium or any browser
+#
+
+main()
+{
+   local search="$(rofi -lines 0 \
+                        -dmenu \
+                        -i \
+                        -p 'Search')"
+   local links=(
+   "http://www.google.com/search?q=${search}"   # google
+   "https://duckduckgo.com/?q=${search}"        # duckduckgo
+   )
+
+   if [[ ! -z "${search}" ]]; then
+      ${BROWSER} "${links[0]}"
+   fi
+}
+
+#-----------------------------------------------------
+
+main "$@"

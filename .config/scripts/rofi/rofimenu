@@ -1,0 +1,69 @@
+#!/bin/bash
+#
+# Rofi general menu
+#
+
+declare -r WINDOW="Show Active Windows"
+declare -r SSH="Show Active Ssh Sessions"
+declare -r APPS="Applications"
+declare -r HTTP="Http Search"
+declare -r CLIP="Clipboard"
+declare -r DISP="Display"
+declare -r POWER="Power Management"
+declare -r MOUNT="Mount Devices"
+declare -r UMOUNT="Unmount Devices"
+declare -r CALC="Calculator"
+declare -r TORRENT="Torrent"
+
+
+main()
+{
+   local options="${WINDOW},${SSH},${APPS},${HTTP},\
+${CLIP},${DISP},${POWER},${MOUNT},\
+${UMOUNT},${CALC},${TORRENT}"
+
+   local launch="$(rofiprompt --text "Choose option" \
+                              --options "${options}")"
+   case "${launch}" in
+      "${WINDOW}")
+         rofishow --window
+         ;;
+      "${SSH}")
+         rofishow --ssh
+         ;;
+      "${APPS}")
+         rofishow --applications
+         ;;
+      "${HTTP}") # Depends: PACMAN: surf
+         rofisurf
+         ;;
+      "${CLIP}") # Depends: AUR:rofi-greenclip
+         rofishow --clipboard
+         ;;
+      "${DISP}")
+         rofidisplay
+         ;;
+      "${POWER}")
+         rofipower
+         ;;
+      "${MOUNT}")
+         rofimount
+         ;;
+      "${UMOUNT}")
+         rofiumount
+         ;;
+      "${CALC}") # Depends: AUR:rofi-calc
+         rofishow --calculator
+         ;;
+      "${TORRENT}")
+         rofitorrent
+         ;;
+      *)
+         exit 1
+         ;;
+   esac
+}
+
+#-------------------------------------------------------------
+
+main "$@"

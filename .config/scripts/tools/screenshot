@@ -1,0 +1,59 @@
+#!/bin/bash
+#
+# Perform a screenshot and save the file to the below dir location
+#
+
+declare -r DIR="${HOME}/Pictures/screenshots"
+
+main()
+{
+   if [[ $# == 0 ]]; then
+      throwerror "$0"
+      exit 1
+   fi
+
+   [[ ! -d "${DIR}" ]] && mkdir -p "${DIR}"
+
+   parseparams "haw" "help,all,window"
+   while true; do
+      case "$1" in
+         -h|--help)
+            show_help
+            exit 0
+            ;;
+         -a|--all)
+            scrot -e 'mv $f /home/teddy/Pictures/screenshots'
+            dunstify "Screenshot taken !" "Check your $HOME/Pictures/screenshots."
+            exit 0
+            ;;
+         -w|--window)
+            scrot -u -e 'mv $f /home/teddy/Pictures/screenshots'
+            dunstify "Screenshot taken !" "Check your $HOME/Pictures/screenshots."
+            exit 0
+            ;;
+         *)
+            throwerror "$0" "$1"
+            exit 1
+            ;;
+      esac
+   done
+}
+
+show_help()
+{
+cat <<-END
+Usage: $(basename $0) <cmd>
+
+Perform a screenshot and save the file to the below dir location
+
+Options:
+   -a --all     = all display
+   -w --window  = focused window
+   -h --help    = show help
+END
+}
+
+#--------------------------------------------------------------------------------
+
+main "$@"
+

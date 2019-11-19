@@ -1,0 +1,18 @@
+[Desktop Entry]
+Comment[en_US]=Movie Streaming
+Comment=Movie Streaming
+Exec=/home/teddy/.local/applications/popcorn-time/Popcorn-Time
+Icon=/home/teddy/.local/applications/popcorn-time/popcorntime.png
+Categories=AudioVideo;Player;Recorder;
+Name=Popcorn Time
+NoDisplay=false
+MimeType=
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=

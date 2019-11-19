@@ -1,0 +1,20 @@
+[Desktop Entry]
+Comment[en_US]=Code IDE
+Exec=/home/teddy/Development/tools/eclipse/eclipse
+GenericName[en_US]=Eclipse
+GenericName=Eclipse
+Icon=/home/teddy/Development/tools/eclipse/icon.xpm
+Categories=Development;
+MimeType=
+Name[en_US]=Eclipse
+Name=Eclipse
+NoDisplay=false
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfdashboard" version="1.0">
+  <property name="theme" type="string" value="xfdashboard-dark"/>
+  <property name="favourites" type="array">
+    <value type="string" value="exo-web-browser.desktop"/>
+    <value type="string" value="firefox.desktop"/>
+    <value type="string" value="doublecmd.desktop"/>
+    <value type="string" value="exo-file-manager.desktop"/>
+    <value type="string" value="exo-terminal-emulator.desktop"/>
+    <value type="string" value="xfce-settings-manager.desktop"/>
+    <value type="string" value="xfce-display-settings.desktop"/>
+  </property>
+  <property name="components" type="empty">
+    <property name="applications-view" type="empty">
+      <property name="show-all-apps" type="bool" value="true"/>
+    </property>
+  </property>
+</channel>

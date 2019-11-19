@@ -1,4 +1,4 @@
 # Use # for commenting the line with the files you don't want to backup
 Development/projects-archive/
 Development/libraries/
-Utilities/
+Development/utilities/

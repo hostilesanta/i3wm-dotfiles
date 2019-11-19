@@ -28,7 +28,7 @@ main()
       exit 1
    fi
 
-   dunstify "Files backup started !!!"
+   notify-send "Files backup started !!!"
 
    parseparams "hd:m:" "help,dotfiles:,miscfiles:"
 
@@ -48,47 +48,50 @@ main()
             ;;
          *)
             throwerror "$0" "$1"
-            dunstify --urgency=CRITICAL "Files backup failed !!!"
+            notify-send --urgency=CRITICAL "Files backup failed !!!"
             exit 1
             ;;
       esac
    done
 
-   dunstify "Files backup finished !!!"
+   notify-send "Files backup finished !!!"
 }
 
 backup_dotfiles()
 {
-   remove_file "${LOG_DOTFILES}"
+  remove_file "${LOG_DOTFILES}"
 
-   local backup_dir="$1_$(date '+%Y_%m_%d')"
+  local backup_dir="$1_$(date '+%Y_%m_%d')"
 
-   local dotfiles_dir="${backup_dir}/home"
-   create_dir "${dotfiles_dir}"
-   copy_files "${DOTFILES}" "${dotfiles_dir}" "${LOG_DOTFILES}"
+  local dotfiles_dir="${backup_dir}/home"
+  create_dir "${dotfiles_dir}"
+  copy_files "${DOTFILES}" "${dotfiles_dir}" "${LOG_DOTFILES}"
 
-   # list all pacman official repo installed pkg and print them to file
-   pacman -Qqe | grep -v "$(pacman -Qqm)" > "${backup_dir}/pacman.txt"
-   # list all AUR repo installed pkg and print them to file
-   pacman -Qqm > "${backup_dir}/aur.txt"
+  # change param for another distro
+  save_installed_pkgs "deb"
 
-   # install all pckg from file (PACMAN)
-   # cat pacman.txt | xargs pacman -S --needed --noconfirm
+  #create_archive "${backup_dir}"
+}
 
-   # install all pckg from file (AUR)
-   # cat aur.txt | xargs yay -S --needed --noconfirm
-
-   create_archive "${backup_dir}"
+save_installed_pkgs()
+{
+  if [[ "$1" = "arch" ]]; then
+    # list all pacman official repo installed pkg and print them to file
+    pacman -Qqe | grep -v "$(pacman -Qqm)" > "${backup_dir}/packages.txt"
+    # list all AUR repo installed pkg and print them to file
+    pacman -Qqm > "${backup_dir}/aur.txt"
+  elif [[ "$1" = 'deb' ]]; then
+    apt list --installed | sed 's/\/.*//' > "${backup_dir}/packages.txt"
+  fi
 }
 
 backup_miscfiles()
 {
    remove_file "${LOG_MISCFILES}"
    local backup_dir="$1_$(date '+%Y_%m_%d')"
-   #local backup_dir="$1"
    create_dir "${backup_dir}"
    copy_files "${MISCFILES}" "${backup_dir}" "${LOG_MISCFILES}"
-   create_archive "${backup_dir}"
+  # create_archive "${backup_dir}"
 }
 
 create_dir(){ [[ ! -d "$1" ]] && mkdir -p "$1"; }
@@ -123,7 +126,7 @@ create_archive()
    tar --create \
        --verbose \
        --gzip \
-       --file "$1".tar.gz ./*
+       --file "$1".tar ./*
 }
 
 show_help()

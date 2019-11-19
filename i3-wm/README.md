@@ -1,89 +1,51 @@
-# Linux Dotfiles
+# i3-wm Dotfiles
 
-i3-wm dotfiles used in Manjaro Linux distribution.
+i3-wm dotfiles. Currently used in Manjaro Linux distribution.
 
 ## Packages and files
 
-> <b>config</b>
+```
+config
+├── calcurse                -> configuration and shortcut keys used by calcurse.
+├── conky                   -> configuration used by conky.For rendering conky on 1920x1080 display and 2560x1080 display.
+├── dunst                   -> configuration used by dunst for notification management.
+├── feh                     -> shortcuts used by feh.
+├── fontconfig              -> font configuration file.
+├── gdfuse                  -> configuration used by google-drive-ocamlfuse for mounting google drive.
+├── git-completion.bash     -> autocomplete git commands in terminal.
+├── greenclip.cfg           -> configuration used by rofi clipboard manager. Requires greenclip installation.
+├── gtk-2.0                 -> gtk 2 theme configuration.
+├── gtk-3.0                 -> gtk 3 theme configuration.
+├── i3                      -> configuration used by i3-wm. 
+│   ├── lockscreen          -> lock screen background wallpaper. This image is used by betterlockscreen app when current user session is locked.
+│   ├── themes              -> themes used for i3-wm customization. This themes are required by j4-make-config tool.
+│   └── wallpaper           -> wallpapers for 2 displays, 1920x1080 and 2560x1080.
+├── i3blocks                -> configuration used by i3blocks.
+├── mimeapps.list           -> overridden mimes.
+├── mpv                     -> configuration used by mpv player.
+├── newsboat                -> configuration used by newsboat rss feeder.
+├── nvim                    -> configuration used by neovim.
+├── rofi                    -> configuration used by rofi.
+├── sxhkd                   -> global keyboard and mouse shortcuts, sxhkd is required to be installed.
+├── sxiv                    -> keyboard shortcuts used by sxiv.
+├── transmission-daemon     -> settings for transmission torrent daemon.
+├── vifm                    -> configuration used by vifm file manager.
+│   ├── colors              -> colorschemes used for vifm customization.
+│   └── scripts             -> scripts used in vifm workflow.
+├── youtube-dl              -> configuration used by youtube downloader app.
+├── youtube-viewer          -> configuration used by youtube viewer app.
+└── zathura                 -> configuration used by zathura pdf reader.
+local
+└── share
+    ├── applications        -> default apps in .desktop format used in mimeapps.list.
+    └── nvim                -> contains plug.vim plugin used for plugins installation in neovim.
+.Xresources                 -> configuration for dpi, urxvt and st terminals, background theme etc.
+.bash_aliases               -> personal aliases.
+.bashrc                     -> configuration for shell session.
+.fehbg                      -> background image loading script used by feh.
+.j4-make-config.rc          -> used by j4-make-config tool for loading the i3-wm theme.
+.profile                    -> configuration for shell environment, loaded at startup.
+.xinitrc                    -> X server configuration, loaded at startup.
+```
 
->> <b>calcurse</b> - configuration and shortcut keys used by [calcurse](https://calcurse.org/)
-
->> <b>conky</b> - configuration used by [conky](https://github.com/brndnmtthws/conky).There are 2 config files, for rendering conky on 1920x1080 display and 2560x1080 display
-
->> <b>dunst</b> - configuration required by [dunst](https://dunst-project.org/) for notification popups
-
->> <b>feh</b> - shortcuts used by [feh](https://feh.finalrewind.org/)
-
->> <b>fontconfig</b> - font configuration file
-
->> <b>gdfuse</b> - configuration used by [google-drive-ocamlfuse](https://github.com/astrada/google-drive-ocamlfuse) for mounting google drive
-
->> <b>gtk-3.0</b> - gtk 3 theme configuration
-
->> <b>gtk-2.0</b> - gtk 2 theme configuration
-
->> <b>i3</b> - configuration used by i3-wm. Check [i3 config](.config/i3/README.md) for more details
-
->>> <b>lockscreen</b> - lock screen background wallpaper. This image is used by [betterlockscreen](https://github.com/pavanjadhaw/betterlockscreen) when current user session is locked
-
->>> <b>themes</b> - themes used for i3-wm customization. This themes are required by [j4-make-config](https://github.com/okraits/j4-make-config) tool
-
->>> <b>wallpaper</b> - wallpapers for 2 displays, 1920x1080 and 2560x1080
-
->> <b>i3blocks</b> - configuration used by [i3blocks](https://github.com/Airblader/i3blocks-gaps)
-
->> <b>mpv</b> - configuration used by [mpv](https://mpv.io/) player
-
->> <b>newsboat</b> - configuration used by [newsboat](https://newsboat.org/)
-
->> <b>nvim</b> - configuration used by [neovim](https://neovim.io/)
-
->> <b>rofi</b> - configuration used by [rofi](https://github.com/davatorium/rofi)
-
->> <b>scripts</b> - scripts used in i3 workflow. Check [scripts](.config/scripts/README.md) for more details
-
->> <b>sxhkd</b> - global keyboard and mouse shortcuts, [sxhkd](https://github.com/baskerville/sxhkd) is required to be installed
-
->> <b>sxiv</b> - keyboard shortcuts used by [sxiv](https://github.com/muennich/sxiv)
-
->> <b>transmission-daemon</b> - settings for [transmission](https://transmissionbt.com/) torrent daemon
-
->> <b>vifm</b> - configuration used by [vifm](https://vifm.info/) file manager
-
->>> <b>colors</b> - colorschemes used for vifm customization
-
->>> <b>scripts</b> - scripts used in vifm workflow
-
->> <b>youtube-dl</b> - configuration used by [youtube downloader](https://github.com/ytdl-org/youtube-dl)
-
->> <b>youtube-viewer</b> - configuration used by [youtube viewer](https://github.com/trizen/youtube-viewer)
-
->> <b>zathura</b> - configuration used by [zathura](https://wiki.archlinux.org/index.php/Zathura) pdf reader
-
->> <b>git-completion.bash</b> - autocomplete git commands in terminal
-
->> <b>greenclip.cfg</b> - configuration used by rofi clipboard manager. Requires [greenclip installation](https://github.com/erebe/greenclip)
-
->> <b>mimeapps.list</b> - overridden mimes
-
-> <b>local</b>
-
->> <b>share</b>
-
->>> <b>applications</b> - default apps in .desktop format used in mimeapps.list
-
->>> <b>_nvim</b>_ - contains [plug.vim](https://github.com/junegunn/vim-plug) plugin used for plugins installation in neovim
-
-> <b>.Xresources</b> - configuration for dpi, urxvt and st terminals, background theme etc.
-
-> <b>.bash\_aliases</b> - personal aliases
-
-> <b>.bashrc</b> - configuration for shell session
-
-> <b>.fehbg</b> - background image loading script used by feh
-
-> <b>.j4-make-config.rc</b> - used by j4-make-config tool for loading the i3-wm theme
-
-> <b>.profile</b> - configuration for shell environment, loaded at startup
-
-> <b>.xinitrc</b> - X server configuration, loaded at startup
+Check also [i3 config steps](.config/i3/README.md) and [scripts](../scripts/README.md) used in i3 workflow for more details.

@@ -5,7 +5,7 @@
 #
 
 for entry in $(find "${SCRIPTS}" -type f -not -path "${SCRIPTS}/.git/*"); do
-   if [[ $(file --mime-type -b ${entry}) != "text/plain" && "$(basename ${entry})" != "tags" ]]; then
+   if [[ $(file --mime-type -b ${entry}) != "text/plain" && "$(basename ${entry})" != "tags" && $entry != *.sh ]]; then
       echo $(basename "${entry}")
       ln -sf "${entry}" "${BIN}"/$(basename "${entry}")
    fi
